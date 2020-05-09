@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-class DocPatientAccepted extends Component {
+class HospitalRequests extends Component {
     render() {
         return(
             <View>
-                <Text>Patient's Accepted Requests Doccy</Text>
+                <Text>Hospital's Services Requested For</Text>
             </View>
         )
     }
 }
 
-export default DocPatientAccepted;
+export default HospitalRequests;
