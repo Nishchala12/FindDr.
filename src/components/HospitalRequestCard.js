@@ -44,15 +44,15 @@ class HospitalRequestCard extends Component {
             <View style = {{ margin: 5 }}>
                     <TouchableOpacity style = {styles.cardHeaderStyle} onPress = { () => this.props.toggle() }>
                         <View style = {{width: 80}}>
-                            <Image source = {require('../Images/Profile.png')}
+                            <Image source = {require('../Images/profile.png')}
                             style = { styles.imageStyle } tintColor ="#A9A9A9"
                             />
                         </View>
                         <View style = {{width: 120}}>
-        <Text style = {{ marginRight: 5 }}> <Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff' }}>Doctor Name: {'\n' } </Text>{ this.props.data.doctorname }</Text>
+                             <Text style = {{ marginRight: 5 }}> <Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff' }}>Doctor Name: {'\n' } </Text>{ this.props.data.doctorname }</Text>
                         </View>
                         <View style = {{width: 170}}>
-                            <Text style = {{paddingBottom: 5 }}> <Text style = {{ fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' } </Text>{ this.props.data.hospitalname } { '\n' } { this.props.data.hospitaladdress } </Text>
+                            <Text style = {{paddingBottom: 5, paddingRight: 5 }}> <Text style = {{ fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' } </Text>{ this.props.data.hospitalname } { '\n' } { this.props.data.hospitaladdress } </Text>
                         </View>
                     </TouchableOpacity>
                     { this.expandCard() }

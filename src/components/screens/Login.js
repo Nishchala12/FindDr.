@@ -108,7 +108,7 @@ class Login extends Component {
     return(
       <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
   <KeyboardAwareScrollView>
-    <Image source = {require('../../Images/abc.png')}
+    <Image source = {require('../../Images/doctor.png')}
     style = { styles.imageStyle } tintColor='#59bfff'
     />
     <View style = { styles.textContainerStyle }>

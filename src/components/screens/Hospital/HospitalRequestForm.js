@@ -10,21 +10,31 @@ require('firebase/auth')
 
 class HospitalRequestForm extends Component {
     state = {
-      dname: '',
-      hname: '',
       duration: '',
       location: '',
       qualify: '',
-      haddr: ''
+      haddr: '',
+      user: {}
     }
+    
 
+  componentDidMount() {
+      firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value', (user) =>{
+          this.setState({ user: user.val() })
+          })
+  }
 
     writeRequestData() {
+      if(this.state.duration==''||this.state.location==''||this.state.qualify==''||this.state.haddr=='')
+      {
+        Toast.show("Kindly fill in all the fields.")
+      }
+      else
+      {
       const now = new Date()  
       const reqID ='H_'+Math.round(now.getTime());
 
-      let obj = {doctorname: this.state.dname, hospitalname: this.state.hname, 
-        duration: this.state.duration, location: this.state.location, 
+      let obj = {doctorname: this.state.user.dname, hospitalname: this.state.user.hname, duration: this.state.duration, location: this.state.location, 
         qualifications: this.state.qualify, hospitaladdress: this.state.haddr
       }
 
@@ -38,10 +48,11 @@ class HospitalRequestForm extends Component {
       .then(()=>{
         console.log('Success');
         Toast.show("Submission Successful!")  
-        this.setState({dname:'', hname: '', duration: '', location: '', qualify: '', haddr:'' })
+        this.setState({duration: '', location: '', qualify: '', haddr:'' })
         }).catch((error)=>{
           console.log('error ' , error);
         })
+      }
     }
 
     render()
@@ -49,30 +60,10 @@ class HospitalRequestForm extends Component {
       return(
         <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
           <KeyboardAwareScrollView>
-            <Image source = {require('../../../Images/abc.png')}
+            <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
             />
             <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 20}}>Enter Doctor's Details</Text>
-
-            <View style = { styles.textContainerStyle }>
-              <TextInput
-              placeholder = 'Doctor Name'
-              autoCorrect = { false }
-              value = {this.state.dname}
-              onChangeText = {dname => this.setState({ dname })}
-              style = { styles.inputStyle }
-                ></TextInput>
-            </View>
-
-            <View style = { styles.textContainerStyle }>
-              <TextInput
-              placeholder= 'Hospital Name'
-              autoCorrect = { false }
-              value={this.state.hname}
-              onChangeText={hname => this.setState({ hname })}
-              style = { styles.inputStyle }
-                ></TextInput>
-            </View>
 
             <View style = { styles.textContainerStyle1 }>
               <TextInput

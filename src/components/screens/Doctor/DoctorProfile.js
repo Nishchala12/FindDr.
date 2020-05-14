@@ -8,7 +8,7 @@ require('firebase/auth')
 class DoctorProfile extends Component
 {
     state = {
-        user: '',
+        user: {},
         editText: false,
         profileText: 'Edit Profile',
         transparency: 'transparent'
@@ -94,7 +94,7 @@ class DoctorProfile extends Component
                     </TouchableOpacity>
             </View>
         <KeyboardAwareScrollView style = {{backgroundColor: '#fdfdfd', height: 620}}>
-            <Image source = {require('../../../Images/abc.png')}
+            <Image source = {require('../../../Images/profile.png')}
                 style = { styles.imageStyle } tintColor ="#59bfff"
             />
           

@@ -16,37 +16,52 @@ class PRequests extends Component {
         phone: '',
         email: '',
         raddr: '',
-        complaints: ''
+        complaints: '',
+        user: {}
     }
 
+    componentDidMount() {
+        firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value', (user) =>{
+            this.setState({ user: user.val() })
+            })
+    }
+
+    importAddress () {
+        this.setState({raddr: this.state.user.raddr})
+    }
 
     writeRequestData()
    {
-    const now = new Date()  
-    const reqID = 'P_'+Math.round(now.getTime())
-    
-    var user = firebase.auth().currentUser
-    var userId = user.uid
+        if(this.state.name==''||this.state.age==''||this.state.gender==''||this.state.phone==''||this.state.email==''||this.state.raddr==''||this.state.complaints=='')
+        {
+        Toast.show("Kindly fill in all the fields.")
+        }
+        else
+        {
+        const now = new Date()  
+        const reqID = 'P_'+Math.round(now.getTime())
+        
+        var user = firebase.auth().currentUser
+        var userId = user.uid
 
-    let obj = {name: this.state.name, age: this.state.age, 
-        email: this.state.email, gender: this.state.gender, 
-        phone: this.state.phone, raddr: this.state.raddr, complaints: this.state.complaints}
+        let obj = {profilename: this.state.user.name, name: this.state.name, age: this.state.age, 
+            email: this.state.email, gender: this.state.gender, 
+            phone: this.state.phone, raddr: this.state.raddr, complaints: this.state.complaints}
 
-    var updateRequests = {};
-    updateRequests['requests/patient'+reqID] = obj;
+        var updateRequests = {};
+        updateRequests['requests/patient/'+reqID] = obj;
 
-    updateRequests['users/'+userId+'/myrequests/'+reqID] = '';
+        updateRequests['users/'+userId+'/myrequests/'+reqID] = '';
 
-    firebase.database().ref().update(updateRequests)
-    .then(()=>{
-        console.log('Success');
-        Toast.show("Submission Successful!")   
-        this.setState({name: '', age: '', email: '', gender: '', phone: '', raddr: '', complaints: ''})
-        }).catch((error)=>{
-            console.log('error ' , error);
-        })
-
-
+        firebase.database().ref().update(updateRequests)
+        .then(()=>{
+            console.log('Success');
+            Toast.show("Submission Successful!")   
+            this.setState({name: '', age: '', email: '', gender: '', phone: '', raddr: '', complaints: ''})
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
+        }
     }
 
     render()
@@ -54,7 +69,7 @@ class PRequests extends Component {
     return(
     <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
         <KeyboardAwareScrollView>
-            <Image source = {require('../../../Images/abc.png')}
+            <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
             />
 
@@ -109,6 +124,10 @@ class PRequests extends Component {
             style = { styles.inputStyle }
             ></TextInput>
         </View>
+
+            <TouchableOpacity style = {styles.importButtonStyle} onPress={() => {this.importAddress()}}>
+                <Text style ={{color: "#59bfff", fontSize: 14, fontWeight: 'bold'}}>Import from Profile</Text>
+            </TouchableOpacity>
 
         <View style = { styles.textContainerStyle1 }>
             <TextInput
@@ -223,6 +242,13 @@ const styles = {
       flexDirection: 'row',
       alignSelf: 'center',
       marginBottom: 15,
+    },
+
+    importButtonStyle: {
+        alignSelf: 'flex-end',
+        marginRight: 60,
+        marginBottom: 5
+
     },
   
     labelStyle: {

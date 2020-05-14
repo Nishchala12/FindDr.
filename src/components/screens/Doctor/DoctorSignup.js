@@ -197,7 +197,7 @@ class DoctorSignup extends Component {
     return(
       <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
     <KeyboardAwareScrollView>
-        <Image source = {require('../../../Images/abc.png')}
+        <Image source = {require('../../../Images/doctor.png')}
         style = { styles.imageStyle } tintColor ="#59bfff"
         />
      <Text style = {{alignSelf:'center', fontSize: 16, fontWeight: 'bold', color: '#59bfff', marginBottom: 30}}>Sign Up as a Doctor!</Text>
@@ -445,4 +445,3 @@ const styles = {
   };
 
 export default DoctorSignup;
-

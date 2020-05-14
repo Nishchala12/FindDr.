@@ -8,7 +8,7 @@ require('firebase/auth')
 class HospitalProfile extends Component
 {
     state = {
-        user: '',
+        user: {},
         editText: false,
         profileText: 'Edit Profile',
         transparency: 'transparent'
@@ -17,7 +17,7 @@ class HospitalProfile extends Component
     
     componentDidMount() 
     {
-       firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (user) =>{
+       firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value', (user) =>{
        this.setState({ user: user.val() })
        })
     }
@@ -82,7 +82,7 @@ class HospitalProfile extends Component
                     </TouchableOpacity>
             </View>
         <KeyboardAwareScrollView>
-                    <Image source = {require('../../../Images/abc.png')}
+                    <Image source = {require('../../../Images/profile.png')}
                     style = { styles.imageStyle } tintColor ="#59bfff"
                 />
              <View style = {{marginBottom: 25, marginLeft: 60, borderLeftColor: '#59bfff', borderLeftWidth: 1.5}}>

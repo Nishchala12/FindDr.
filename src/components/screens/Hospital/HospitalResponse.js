@@ -7,7 +7,7 @@ require('firebase/auth')
 class HospitalResponse extends Component
 {
     state = {
-        user: ''
+        user: {}
     }
 
     

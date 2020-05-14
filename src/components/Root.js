@@ -2,7 +2,6 @@ import Login from './screens/Login';
 import PatientSignup from './screens/Patient/PatientSignup';
 import PatientRequestForm from './screens/Patient/PatientRequestForm';
 import PatientProfile from './screens/Patient/PatientProfile'
-import PatientResponse from './screens/Patient/PatientResponse';
 import PatientRequests from './screens/Patient/PatientRequests';
 import PatientAccepted from './screens/Patient/PatientAccepted';
 import DoctorSignup from './screens/Doctor/DoctorSignup';
@@ -11,7 +10,6 @@ import DocPatientRequest from './screens/Doctor/DocPatientRequest';
 import DocHospitalRequest from './screens/Doctor/DocHospitalRequest';
 import DocHospitalAccepted from './screens/Doctor/DocHospitalAccepted';
 import DocPatientAccepted from './screens/Doctor/DocPatientAccepted';
-import HospitalResponse from './screens/Hospital/HospitalResponse';
 import HospitalSignup from './screens/Hospital/HospitalSignup';
 import HospitalRequestForm from './screens/Hospital/HospitalRequestForm';
 import HospitalProfile from './screens/Hospital/HospitalProfile';
@@ -43,17 +41,17 @@ function Root() {
                 <BottomTab.Navigator tabBarOptions = {{activeBackgroundColor: '#fdfdfd', inactiveBackgroundColor: '#59bfff', activeTintColor: '#59bfff', inactiveTintColor: '#fdfdfd', showIcon: true}}>
                   <BottomTab.Screen name = "Patient" component = { PatientSignup }
                   options = {{tabBarIcon: ({focused }) => (
-                    <Image source = { require('../Images/signup.png') } style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = { require('../Images/patient.png') } style = { [styles.patientImageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
 
                   <BottomTab.Screen name = "Doctor" component = { DoctorSignup } 
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/doctor.png')} style = { [styles.doctorImageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
 
                   <BottomTab.Screen name = "Hospital" component = { HospitalSignup } 
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/hospital.png')} style = { [styles.hospitalImageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                 </BottomTab.Navigator>
                       )
@@ -67,7 +65,7 @@ function Root() {
                 
                 <BottomTab.Screen name = "Requests" 
                 options = {{tabBarIcon: ({ focused }) => (
-                  <Image source = { require('../Images/signup.png') } style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}]} />
+                  <Image source = { require('../Images/request.png') } style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}]} />
                 )}}>
                   { () => (
                     <TopTab.Navigator tabBarOptions = {{ activeTintColor: '#fdfdfd', inactiveTintColor: '#696969', showIcon: true, labelStyle: { textTransform: 'none' }, indicatorStyle: {backgroundColor: '#fdfdfd'}, style: { backgroundColor: '#59bfff' }} } >
@@ -78,7 +76,7 @@ function Root() {
 
                 <BottomTab.Screen name = "Accepted" 
                 options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png') } style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/accept.png') } style = { [styles.acceptImageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}}>
                   { ({focused}) => (
                     <TopTab.Navigator tabBarOptions = {{ activeTintColor: '#fdfdfd', inactiveTintColor: '#696969', showIcon: true, labelStyle: { textTransform: 'none' },indicatorStyle: {backgroundColor: '#fdfdfd'}, style: { backgroundColor: '#59bfff' }}} >
@@ -90,7 +88,7 @@ function Root() {
 
                 <BottomTab.Screen name = "Profile" component = { DoctorProfile } 
                 options = {{ tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/profile.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                   </BottomTab.Navigator>
             )
@@ -103,12 +101,12 @@ function Root() {
                   
                   <BottomTab.Screen name = "Request Form" component = { PatientRequestForm }
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/login.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/request.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                   
                   <BottomTab.Screen name = "Responses"
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/summary.png')} style = { [styles.imageResponseStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}}>
                     { () => (
                     <TopTab.Navigator tabBarOptions = {{ activeTintColor: '#fdfdfd', inactiveTintColor: '#696969', showIcon: true, labelStyle: { textTransform: 'none' }, indicatorStyle: {backgroundColor: '#fdfdfd'}, style: { backgroundColor: '#59bfff' }} } >
@@ -119,7 +117,7 @@ function Root() {
 
                 <BottomTab.Screen name = "Profile" component = { PatientProfile } 
                 options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/profile.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                 </BottomTab.Navigator>
                     )
@@ -131,12 +129,12 @@ function Root() {
                 <BottomTab.Navigator tabBarOptions = {{ activeBackgroundColor: '#fdfdfd', inactiveBackgroundColor: '#59bfff', activeTintColor: '#59bfff', inactiveTintColor: '#fdfdfd', showIcon: true}}>
                   <BottomTab.Screen name="Request Form" component={ HospitalRequestForm }
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/login.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/request.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
 
                   <BottomTab.Screen name="Responses"
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/summary.png')} style = { [styles.imageResponseStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}}>
                     { () => (
                     <TopTab.Navigator tabBarOptions = {{ activeTintColor: '#fdfdfd', inactiveTintColor: '#696969', showIcon: true, labelStyle: { textTransform: 'none' }, indicatorStyle: {backgroundColor: '#fdfdfd'}, style: { backgroundColor: '#59bfff' }} } >
@@ -147,7 +145,7 @@ function Root() {
 
                   <BottomTab.Screen name="Profile" component={ HospitalProfile } 
                   options = {{tabBarIcon: ({ focused }) => (
-                    <Image source = {require('../Images/signup.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
+                    <Image source = {require('../Images/profile.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                 </BottomTab.Navigator>
                     )
@@ -168,12 +166,39 @@ const styles = {
     },
 
     imageStyle: {
-      height: 20,
+      height: 25,
       width: 25,
       tintColor: '#fdfdfd',
-      marginLeft: 5
+    },
 
+    imageResponseStyle: {
+      height: 24,
+      width: 40,
+      marginLeft: 10
+    },
+
+    patientImageStyle: {
+      height: 28,
+      width: 28
+    },
+
+    doctorImageStyle: {
+      height: 26,
+      width: 26,
+      marginTop: 5
+    },
+
+    hospitalImageStyle: {
+      height: 23,
+      width: 23,
+    },
+
+    acceptImageStyle: {
+      height: 23,
+      width: 23,
     }
+
+    
 }
 
 export default Root;
