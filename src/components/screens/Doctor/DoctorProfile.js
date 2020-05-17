@@ -104,7 +104,7 @@ class DoctorProfile extends Component
             secureTextEntry = { false }
             underlineColorAndroid = { this.state.transparency }
             placeholder = 'Full Name'
-            placeholderTextColor = '#222222'
+            placeholderTextColor = '#A9A9A9'
             autoCorrect = { false }
             value={this.state.user.name}
             onChangeText = {(n) => {this.saveProfile('name', n)}}
@@ -118,7 +118,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'user@gmail.com'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        autoCorrect = { false }
        underlineColorAndroid = { this.state.transparency }
        value={this.state.user.email}
@@ -134,7 +134,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'D.O.B.'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        autoCorrect = { false }
        underlineColorAndroid = { this.state.transparency }
        value={this.state.user.DOB}
@@ -149,7 +149,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Age'
-       placeholderTextColor = "#222222"
+       placeholderTextColor = "#A9A9A9"
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.age}
@@ -164,7 +164,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Contact No.'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.phone}
@@ -180,7 +180,7 @@ class DoctorProfile extends Component
        secureTextEntry = { false }
        underlineColorAndroid = { this.state.transparency }
        placeholder= 'KMC Registration No.'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        autoCorrect = { false }
        value={this.state.user.kmc}
        onChangeText={(k) => {this.saveProfile('kmc', k)}}
@@ -194,7 +194,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= ' Graduated Medical College'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.college}
@@ -209,7 +209,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Residential Address'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        multiline = { true }
        autoCorrect = { false }
@@ -225,7 +225,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Workplace Address'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.waddr}
@@ -241,7 +241,7 @@ class DoctorProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Additional Qualifications'
-       placeholderTextColor = 'white'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.qualifications}

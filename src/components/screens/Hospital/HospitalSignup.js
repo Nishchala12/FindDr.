@@ -64,7 +64,7 @@ class HospitalSignup extends Component {
       else
       {
       return(<TouchableOpacity style={styles.buttonStyle} onPress={this.handleSignUp}> 
-                <Text style ={styles.textStyle}>Signup</Text>
+                <Text style ={styles.textStyle}>Sign Up</Text>
              </TouchableOpacity>);
       }
     }
@@ -73,61 +73,54 @@ class HospitalSignup extends Component {
     {
     return(
     <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
- <KeyboardAwareScrollView>
-    <Image source = {require('../../../Images/hospital.png')}
-    style = { styles.imageStyle } tintColor ="#59bfff"
-    />
-    <Text style = {{alignSelf:'center', fontSize: 16, fontWeight: 'bold', color: '#59bfff', marginBottom: 30}}>Sign Up as a Hospital!</Text>
-  
-  <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Hospital Name'
-   autoCorrect = { false }
-   value={this.state.hname}
-   onChangeText={hname => this.setState({ hname })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+  <KeyboardAwareScrollView>
+      <Image source = {require('../../../Images/hospital.png')}
+      style = { styles.imageStyle } tintColor ="#59bfff"
+      />
+      <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 30}}>Sign Up as a Hospital!</Text>
     
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Doctor - Full Name'
-   autoCorrect = { false }
-   value={this.state.dname}
-   onChangeText={dname => this.setState({ dname })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+      <TextInput
+      secureTextEntry = { false }
+      placeholder= 'Hospital Name'
+      autoCorrect = { false }
+      value={this.state.hname}
+      onChangeText={hname => this.setState({ hname })}
+      style = { styles.inputStyle }
+        ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'user@gmail.com'
-   autoCorrect = { false }
-   value={this.state.email}
-   onChangeText={email => this.setState({ email })}
-    autoCapitalize='none'
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+      <TextInput
+      secureTextEntry = { false }
+      placeholder= 'Doctor - Full Name'
+      autoCorrect = { false }
+      value={this.state.dname}
+      onChangeText={dname => this.setState({ dname })}
+      style = { styles.inputStyle }
+        ></TextInput>
 
-   <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { true }
-   placeholder= 'password'
-   autoCorrect = { false }
-   value={this.state.password}
-    onChangeText={password => this.setState({ password })}
-   style = { styles.inputStyle }
-   ></TextInput>
-   </View>
+      <TextInput
+      secureTextEntry = { false }
+      placeholder= 'user@gmail.com'
+      autoCorrect = { false }
+      value={this.state.email}
+      onChangeText={email => this.setState({ email })}
+        autoCapitalize='none'
+      style = { styles.inputStyle }
+        ></TextInput>
 
-    <View>
-      { this.renderButton() }
-    </View>
-  </KeyboardAwareScrollView>
+      <TextInput
+      secureTextEntry = { true }
+      placeholder= 'password'
+      autoCorrect = { false }
+      value={this.state.password}
+        onChangeText={password => this.setState({ password })}
+      style = { styles.inputStyle }
+      ></TextInput>
+
+
+        <View>
+          { this.renderButton() }
+        </View>
+    </KeyboardAwareScrollView>
   </LinearGradient>
 
     );
@@ -137,84 +130,62 @@ class HospitalSignup extends Component {
 const styles = {
 
     inputStyle: {
-      
-      justifyContent: 'center',
-      alignSelf: 'center',
-      alignItems: 'center',
-      marginLeft: 50,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexWrap: 'wrap',
-      width: 200
+        flexWrap: 'wrap',
+        paddingLeft: 10,
+        backgroundColor: '#fdfdfd',
+        borderRadius: 50,
+        height: 40,
+        width: 300,
+        paddingBottom: 2,
+        paddingTop: 2,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 15,
+
     },
   
     buttonStyle: {
-      color: '#222222',
-      backgroundColor: '#59bfff',
-      borderRadius: 30,
-      width: 100,
-      height: 50,
-      justifyContent: 'center',
-      alignSelf: 'center',
-      marginLeft: 5,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      marginTop: 10,
-      marginBottom: 20
+        color: '#222222',
+        backgroundColor: '#59bfff',
+        borderRadius: 30,
+        width: 100,
+        height: 40,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginLeft: 5,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginTop: 10,
+        marginBottom: 20
     },
   
     textStyle: {
-      alignSelf: 'center',
-          color: '#fff',
-          fontWeight: '600',
-          fontSize: 18,
-          paddingTop: 10,
-          paddingBottom: 10,
+        alignSelf: 'center',
+        color: '#fdfdfd',
+        fontWeight: '600',
+        fontSize: 18,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
-  
-    containerStyle: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        alignSelf: 'center'
-    },
-  
-    textContainerStyle: {
-      backgroundColor: '#fff',
-      borderRadius: 50,
-      height: 40,
-      width: 300,
-      paddingBottom: 2,
-      paddingTop: 2,
-      flexDirection: 'row',
-      alignSelf: 'center',
-      marginBottom: 15,
-    },
-  
-    labelStyle: {
-      fontSize: 18,
-      paddingTop: 9,
-      marginLeft: 10
-   },
 
    gradientStyle: {
-     height: 670
+      height: 670
    },
 
    spinnerStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 30
   },
   
   imageStyle: {
-    height: 200,
-    width: 200,
-    marginBottom: 30,
-    marginTop: 40,
-    alignSelf: 'center'
+      height: 130,
+      width: 130,
+      marginBottom: 30,
+      marginTop: 50,
+      alignSelf: 'center'
  
   }
   };

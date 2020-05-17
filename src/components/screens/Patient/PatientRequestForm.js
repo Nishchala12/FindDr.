@@ -21,7 +21,7 @@ class PRequests extends Component {
     }
 
     componentDidMount() {
-        firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value', (user) =>{
+        firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (user) =>{
             this.setState({ user: user.val() })
             })
     }
@@ -46,7 +46,7 @@ class PRequests extends Component {
 
         let obj = {profilename: this.state.user.name, name: this.state.name, age: this.state.age, 
             email: this.state.email, gender: this.state.gender, 
-            phone: this.state.phone, raddr: this.state.raddr, complaints: this.state.complaints}
+            phone: this.state.phone, raddr: this.state.raddr, complaints: this.state.complaints, status: 0}
 
         var updateRequests = {};
         updateRequests['requests/patient/'+reqID] = obj;
@@ -75,7 +75,6 @@ class PRequests extends Component {
 
             <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 20}}>Enter Patient's Details</Text>
 
-        <View style = { styles.textContainerStyle }>
             <TextInput
             placeholder = ' Full Name'
             autoCorrect = { false }
@@ -83,9 +82,7 @@ class PRequests extends Component {
             onChangeText = {name => this.setState({ name })}
             style = { styles.inputStyle }
             ></TextInput>
-        </View>
-
-        <View style = { styles.textContainerStyle }>
+        
             <TextInput
             placeholder= 'user@gmail.com'
             autoCorrect = { false }
@@ -93,9 +90,7 @@ class PRequests extends Component {
             onChangeText={email => this.setState({ email })}
             style = { styles.inputStyle }
             ></TextInput>
-        </View>
 
-        <View style = { styles.textContainerStyle }>
             <TextInput
             placeholder= 'Contact No.'
             autoCorrect = { false }
@@ -103,9 +98,7 @@ class PRequests extends Component {
             onChangeText={phone => this.setState({ phone })}
             style = { styles.inputStyle }
             ></TextInput>
-        </View>
 
-        <View style = { styles.textContainerStyle }>
             <TextInput
             placeholder= 'Age'
             autoCorrect = { false }
@@ -113,9 +106,7 @@ class PRequests extends Component {
             onChangeText={age => this.setState({ age })}
             style = { styles.inputStyle }
             ></TextInput>
-        </View>
 
-        <View style = { styles.textContainerStyle }>
             <TextInput
             placeholder= 'Gender'
             autoCorrect = { false }
@@ -123,39 +114,35 @@ class PRequests extends Component {
             onChangeText={gender => this.setState({ gender })}
             style = { styles.inputStyle }
             ></TextInput>
-        </View>
+       
 
             <TouchableOpacity style = {styles.importButtonStyle} onPress={() => {this.importAddress()}}>
                 <Text style ={{color: "#59bfff", fontSize: 14, fontWeight: 'bold'}}>Import from Profile</Text>
             </TouchableOpacity>
 
-        <View style = { styles.textContainerStyle1 }>
             <TextInput
             placeholder= 'Residential Address'
             autoCorrect = { false }
             value={this.state.raddr}
             onChangeText={raddr => this.setState({ raddr })}
-            style = { styles.inputStyle }
+            style = { styles.inputStyle1 }
             multiline = { true } 
             ></TextInput>
-        </View>
-
-        <View style = { styles.textContainerStyle1 }>
+    
             <TextInput
             placeholder= 'Complaints - (Duration)'
             autoCorrect = { false }
             value={this.state.complaints}
             onChangeText={complaints => this.setState({ complaints })}
-            style = { styles.inputStyle }
+            style = { styles.inputStyle1 }
             multiline = { true } 
             ></TextInput>
-        </View>
 
-        <View>
+       
             <TouchableOpacity style={styles.buttonStyle} onPress={() => {this.writeRequestData()}}> 
                 <Text style ={styles.textStyle}>Submit</Text>
             </TouchableOpacity>
-        </View>
+
     </KeyboardAwareScrollView>
   </LinearGradient>
     );
@@ -166,16 +153,31 @@ class PRequests extends Component {
 const styles = {
 
     inputStyle: {
+        flexWrap: 'wrap',
+        backgroundColor: '#fdfdfd',
+        borderRadius: 50,
+        height: 40,
+        width: 300,
+        paddingBottom: 2,
+        paddingTop: 2,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 15,
+        paddingLeft: 10
       
-      justifyContent: 'center',
-      alignSelf: 'center',
-      alignItems: 'center',
-      marginLeft: 50,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexWrap: 'wrap',
-      width: 200
+    },
+
+    inputStyle1: {
+        backgroundColor: '#fdfdfd',
+        borderRadius: 30,
+        height: 100,
+        width: 300,
+        paddingBottom: 2,
+        paddingTop: 2,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 15,
+        paddingLeft: 10
     },
 
     gradientStyle: {
@@ -185,28 +187,26 @@ const styles = {
     logoutStyle: {
         alignSelf: 'center', 
         alignItems: 'center',
-        //justifyContent:'center'
-        //marginLeft:60
     },
   
     buttonStyle: {
-      color: '#222222',
-      backgroundColor: '#59bfff',
-      borderRadius: 30,
-      width: 100,
-      height: 40,
-      justifyContent: 'center',
-      alignSelf: 'center',
-      marginLeft: 5,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      marginTop: 5,
-      marginBottom: 25
+        color: '#222222',
+        backgroundColor: '#59bfff',
+        borderRadius: 30,
+        width: 100,
+        height: 40,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginLeft: 5,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginTop: 5,
+        marginBottom: 25
     },
 
     textContainerStyle1: {
-        backgroundColor: '#fff',
+        backgroundColor: '#fdfdfd',
         borderRadius: 30,
         height: 100,
         width: 300,
@@ -218,12 +218,12 @@ const styles = {
       },
   
     textStyle: {
-      alignSelf: 'center',
-          color: '#fff',
-          fontWeight: '600',
-          fontSize: 18,
-          paddingTop: 10,
-          paddingBottom: 10,
+        alignSelf: 'center',
+        color: '#fdfdfd',
+        fontWeight: '600',
+        fontSize: 18,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
   
     containerStyle: {
@@ -233,43 +233,42 @@ const styles = {
     },
   
     textContainerStyle: {
-      backgroundColor: '#fff',
-      borderRadius: 50,
-      height: 40,
-      width: 300,
-      paddingBottom: 2,
-      paddingTop: 2,
-      flexDirection: 'row',
-      alignSelf: 'center',
-      marginBottom: 15,
+        backgroundColor: '#fdfdfd',
+        borderRadius: 50,
+        height: 40,
+        width: 300,
+        paddingBottom: 2,
+        paddingTop: 2,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 15,
     },
 
     importButtonStyle: {
         alignSelf: 'flex-end',
         marginRight: 60,
         marginBottom: 5
-
     },
   
     labelStyle: {
-      fontSize: 18,
-      paddingTop: 9,
-      marginLeft: 10
+        fontSize: 18,
+        paddingTop: 9,
+        marginLeft: 10
    },
 
    spinnerStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30
-  },
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30
+    },
   
    imageStyle: {
-     height: 100,
-     width: 100,
-     marginBottom: 30,
-     marginTop: 30,
-     alignSelf: 'center'
+        height: 100,
+        width: 100,
+        marginBottom: 30,
+        marginTop: 30,
+        alignSelf: 'center'
   
    }
   };

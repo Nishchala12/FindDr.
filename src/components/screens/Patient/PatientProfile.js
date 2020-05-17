@@ -76,7 +76,8 @@ class PatientProfile extends Component
         <Text style = {styles.textStyle}>Name:</Text>
        <TextInput
        secureTextEntry = { false }
-       placeholder= 'Full Name'
+       placeholder = 'Full Name'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.name}
@@ -84,13 +85,14 @@ class PatientProfile extends Component
        style = { styles.inputStyle }
        editable = {this.state.editText}
         ></TextInput>
+        
         </View>
         <View style = {{marginBottom: 25, marginLeft: 60, borderLeftColor: '#59bfff', borderLeftWidth: 1.5}}>
         <Text style = {styles.textStyle}>Email:</Text>
        <TextInput
        secureTextEntry = { false }
        placeholder= 'user@gmail.com'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.email}
@@ -106,7 +108,7 @@ class PatientProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Contact No.'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.phone}
@@ -121,7 +123,7 @@ class PatientProfile extends Component
        <TextInput
        secureTextEntry = { false }
        placeholder= 'Residential Address'
-       placeholderTextColor = '#222222'
+       placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        multiline = { true }
        autoCorrect = { false }

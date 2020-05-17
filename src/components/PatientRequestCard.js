@@ -10,7 +10,7 @@ class PatientRequestCard extends Component {
 
         return(
             <View style = {{ flexDirection: 'row'}}>
-                        <View style = { styles.cardBodyStyle}>
+                        <View style = { [styles.cardBodyStyle, { width: this.props.tickAction ? '78%' : '95%'}]}>
                             <View style = {{flexDirection: 'row'}}> 
                                 <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff', alignSelf:'center' }}>Patient Name:</Text>
                                 <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{this.props.data.name}</Text>
@@ -39,16 +39,25 @@ class PatientRequestCard extends Component {
                             <Text style = {{ fontWeight: 'bold', color: '#59bfff', alignSelf: 'center' }}>{ '\n' } Complaints</Text>
                              <Text style = {{ marginLeft: 5, marginBottom: 10 }}>{this.props.data.complaints}</Text>
                         </View>
-                        <View style = { styles.cardButtonStyle }>
-                            <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }}>
-                                <Image source = {require('../Images/check.png')}
+                        <View style = { [styles.cardButtonStyle,
+                        { backgroundColor: this.props.tickAction ? '#fdfdfd' : null },
+                        { elevation: this.props.tickAction ? 5 : null }
+                    ] }>
+                            <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }} onPress = { () => this.props.acceptRequest() }>
+                                { this.props.tickAction ?
+                                   <Image source = {require('../Images/check.png')}
                                 style = { styles.buttonAcceptImageStyle } tintColor ="#59bfff"
                                 />
+                                : null
+                                }       
                             </TouchableOpacity >
                             <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }}>
+                            { this.props.crossAction ?  
                                 <Image source = {require('../Images/cross.png')}
                                 style = { styles.buttonDeclineImageStyle } tintColor ="#696969"
                                 />
+                                : null
+                                } 
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -65,10 +74,10 @@ class PatientRequestCard extends Component {
                             />
                         </View>
                         <View style = {{width: 120}}>
-                            <Text style = {{ marginRight: 5 }}> <Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff' }}>Profile Name:{ '\n' }</Text>{this.props.data.profilename}</Text>
+                            <Text style = {{ marginRight: 5 }}><Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff' }}>Profile Name: { '\n' }</Text>{this.props.data.profilename}</Text>
                         </View>
                         <View style = {{width: 170}}>
-                        <Text style = {{paddingBottom: 5, paddingRight: 5}}> <Text style = {{ fontWeight: 'bold', color: '#59bfff'}}>Address:{'\n' }</Text>{this.props.data.raddr}</Text>
+                        <Text style = {{paddingBottom: 5, paddingRight: 10}}><Text style = {{ fontWeight: 'bold', color: '#59bfff'}}>Address: {'\n' }</Text>{this.props.data.raddr}</Text>
                         </View>
                     </TouchableOpacity>
                     { this.expandCard() }

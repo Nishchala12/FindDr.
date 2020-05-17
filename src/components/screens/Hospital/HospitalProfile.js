@@ -91,7 +91,7 @@ class HospitalProfile extends Component
            secureTextEntry = { false }
            placeholder= 'Hospital Name'
            underlineColorAndroid = { this.state.transparency }
-           placeholderTextColor = '#222222'
+           placeholderTextColor = '#A9A9A9'
            autoCorrect = { false }
            value={this.state.user.hname}
            onChangeText={(hn) => this.saveProfile('hname', hn)}
@@ -105,7 +105,7 @@ class HospitalProfile extends Component
            <TextInput
            secureTextEntry = { false }
            placeholder= 'Doctor Name'
-           placeholderTextColor = '#222222'
+           placeholderTextColor = '#A9A9A9'
            underlineColorAndroid = { this.state.transparency }
            autoCorrect = { false }
            value={this.state.user.dname}
@@ -120,7 +120,7 @@ class HospitalProfile extends Component
            <TextInput
            secureTextEntry = { false }
            placeholder= 'user@gmail.com'
-           placeholderTextColor = '#222222'
+           placeholderTextColor = '#A9A9A9'
            underlineColorAndroid = { this.state.transparency }
            autoCorrect = { false }
            value={this.state.user.email}

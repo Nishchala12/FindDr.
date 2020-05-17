@@ -34,9 +34,10 @@ class HospitalRequestForm extends Component {
       const now = new Date()  
       const reqID ='H_'+Math.round(now.getTime());
 
-      let obj = {doctorname: this.state.user.dname, hospitalname: this.state.user.hname, duration: this.state.duration, location: this.state.location, 
-        qualifications: this.state.qualify, hospitaladdress: this.state.haddr
-      }
+      let obj = {doctorname: this.state.user.dname, hospitalname: this.state.user.hname, 
+        duration: this.state.duration, location: this.state.location, 
+        qualifications: this.state.qualify, hospitaladdress: this.state.haddr,
+        status: 0}
 
       var user = firebase.auth().currentUser
       var userId = user.uid
@@ -65,18 +66,6 @@ class HospitalRequestForm extends Component {
             />
             <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 20}}>Enter Doctor's Details</Text>
 
-            <View style = { styles.textContainerStyle1 }>
-              <TextInput
-              placeholder= 'Hospital Address'
-              autoCorrect = { false }
-              value={this.state.haddr}
-              onChangeText={haddr => this.setState({ haddr })}
-              multiline = { true }
-              style = { styles.inputStyle }
-              ></TextInput>
-            </View>
-
-            <View style = { styles.textContainerStyle }>
               <TextInput
               placeholder= 'Duty Location'
               autoCorrect = { false }
@@ -84,9 +73,7 @@ class HospitalRequestForm extends Component {
               onChangeText={location => this.setState({ location })}
               style = { styles.inputStyle }
               ></TextInput>
-            </View>
 
-            <View style = { styles.textContainerStyle }>
               <TextInput
               placeholder= 'Duty Duration: (Start - End)'
               autoCorrect = { false }
@@ -94,9 +81,7 @@ class HospitalRequestForm extends Component {
               onChangeText={duration => this.setState({ duration })}
               style = { styles.inputStyle }
               ></TextInput>
-            </View>
 
-            <View style = { styles.textContainerStyle }>
               <TextInput
               placeholder= 'Qualifications Required'
               autoCorrect = { false }
@@ -104,13 +89,19 @@ class HospitalRequestForm extends Component {
               onChangeText={qualify => this.setState({ qualify })}
               style = { styles.inputStyle }
               ></TextInput>
-            </View>
 
-            <View>
+              <TextInput
+              placeholder= 'Hospital Address'
+              autoCorrect = { false }
+              value={this.state.haddr}
+              onChangeText={haddr => this.setState({ haddr })}
+              multiline = { true }
+              style = { styles.inputStyle1 }
+              ></TextInput>
+
               <TouchableOpacity style={styles.buttonStyle} onPress={() => {this.writeRequestData()}}> 
                 <Text style ={styles.textStyle}>Submit</Text>
               </TouchableOpacity>
-            </View>
           </KeyboardAwareScrollView>
         </LinearGradient>
           );
@@ -120,16 +111,29 @@ class HospitalRequestForm extends Component {
 const styles = {
 
     inputStyle: {
-      
-      justifyContent: 'center',
+        backgroundColor: '#fdfdfd',
+        borderRadius: 50,
+        height: 40,
+        width: 300,
+        paddingBottom: 2,
+        paddingTop: 2,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: 15,
+        paddingLeft: 10,
+    },
+
+    inputStyle1: {
+      backgroundColor: '#fdfdfd',
+      borderRadius: 30,
+      height: 100,
+      width: 300,
+      paddingBottom: 2,
+      paddingTop: 2,
+      flexDirection: 'row',
       alignSelf: 'center',
-      alignItems: 'center',
-      marginLeft: 50,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexWrap: 'wrap',
-      width: 200
+      marginBottom: 15,
+      paddingLeft: 10,
     },
   
     buttonStyle: {

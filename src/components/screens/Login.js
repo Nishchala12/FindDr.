@@ -111,7 +111,7 @@ class Login extends Component {
     <Image source = {require('../../Images/doctor.png')}
     style = { styles.imageStyle } tintColor='#59bfff'
     />
-    <View style = { styles.textContainerStyle }>
+
    <TextInput
    secureTextEntry = { false }
    placeholder= 'user@gmail.com'
@@ -121,9 +121,7 @@ class Login extends Component {
    onChangeText={email => this.setState({ email })}
    style = { styles.inputStyle }
     ></TextInput>
-    </View>
 
-   <View style = { styles.textContainerStyle }>
    <TextInput
    secureTextEntry = { true }
    placeholder= 'password'
@@ -132,7 +130,6 @@ class Login extends Component {
    onChangeText={password => this.setState({ password })}
    style = { styles.inputStyle }
    ></TextInput>
-   </View>
       
     <View>
       {this.renderButton()}
@@ -155,16 +152,18 @@ class Login extends Component {
 const styles = {
 
     inputStyle: {
-      
-      justifyContent: 'center',
+      backgroundColor: '#fdfdfd',
+      borderRadius: 50,
+      height: 40,
+      width: 300,
+      paddingBottom: 2,
+      paddingTop: 2,
+      flexDirection: 'row',
       alignSelf: 'center',
-      alignItems: 'center',
-      marginLeft: 50,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexWrap: 'wrap',
-      width: 200
+      marginBottom: 15,
+      marginTop: 2,
+      paddingLeft: 10,
+      flexWrap: 'wrap'
     },
 
     gradientStyle: {
@@ -176,7 +175,7 @@ const styles = {
       backgroundColor: '#59bfff',
       borderRadius: 30,
       width: 100,
-      height: 50,
+      height: 40,
       justifyContent: 'center',
       alignSelf: 'center',
       marginLeft: 5,
@@ -188,30 +187,17 @@ const styles = {
   
     textStyle: {
       alignSelf: 'center',
-          color: '#fff',
-          fontWeight: '600',
-          fontSize: 18,
-          paddingTop: 10,
-          paddingBottom: 10,
+      color: '#fdfdfd',
+      fontWeight: '600',
+      fontSize: 18,
+      paddingTop: 10,
+      paddingBottom: 10,
     },
   
     containerStyle: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        alignSelf: 'center'
-    },
-  
-    textContainerStyle: {
-      backgroundColor: '#fff',
-      borderRadius: 50,
-      height: 40,
-      width: 300,
-      paddingBottom: 2,
-      paddingTop: 2,
-      flexDirection: 'row',
-      alignSelf: 'center',
-      marginBottom: 15,
-      marginTop: 2
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      alignSelf: 'center'
     },
   
     labelStyle: {
@@ -230,7 +216,7 @@ const styles = {
    imageStyle: {
      height: 200,
      width: 200,
-     marginBottom: 70,
+     marginBottom: 50,
      marginTop: 70,
      alignSelf: 'center'
   

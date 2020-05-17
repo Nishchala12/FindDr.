@@ -187,7 +187,7 @@ class DoctorSignup extends Component {
       else
       {
       return(<TouchableOpacity style={styles.buttonStyle} onPress={this.handleSignUp}> 
-                <Text style ={styles.textStyle}>Signup</Text>
+                <Text style ={styles.textStyle}>Sign Up</Text>
              </TouchableOpacity>);
       }
     }
@@ -195,146 +195,125 @@ class DoctorSignup extends Component {
     render()
     {
     return(
-      <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-    <KeyboardAwareScrollView>
+    <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
+      <KeyboardAwareScrollView>
         <Image source = {require('../../../Images/doctor.png')}
         style = { styles.imageStyle } tintColor ="#59bfff"
         />
-     <Text style = {{alignSelf:'center', fontSize: 16, fontWeight: 'bold', color: '#59bfff', marginBottom: 30}}>Sign Up as a Doctor!</Text>
-  <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Full Name'
-   autoCorrect = { false }
-   value={this.state.name}
-   onChangeText={name => this.setState({ name })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 30}}>Sign Up as a Doctor!</Text>
+    
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Full Name'
+        autoCorrect = { false }
+        value={this.state.name}
+        onChangeText={name => this.setState({ name })}
+        style = { styles.inputStyle }
+          ></TextInput>
+        
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'user@gmail.com'
+        autoCorrect = { false }
+        value={this.state.email}
+        onChangeText={email => this.setState({ email })}
+          autoCapitalize='none'
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'user@gmail.com'
-   autoCorrect = { false }
-   value={this.state.email}
-   onChangeText={email => this.setState({ email })}
-    autoCapitalize='none'
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { true }
+        placeholder= 'password'
+        autoCorrect = { false }
+        value={this.state.password}
+          onChangeText={password => this.setState({ password })}
+        style = { styles.inputStyle }
+        ></TextInput>
 
-   <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { true }
-   placeholder= 'password'
-   autoCorrect = { false }
-   value={this.state.password}
-    onChangeText={password => this.setState({ password })}
-   style = { styles.inputStyle }
-   ></TextInput>
-   </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'D.O.B.'
+        autoCorrect = { false }
+        value={this.state.dob}
+        onChangeText={dob => this.setState({ dob })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-   <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'D.O.B.'
-   autoCorrect = { false }
-   value={this.state.dob}
-   onChangeText={dob => this.setState({ dob })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Age'
+        autoCorrect = { false }
+        value={this.state.age}
+        onChangeText={age => this.setState({ age })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Age'
-   autoCorrect = { false }
-   value={this.state.age}
-   onChangeText={age => this.setState({ age })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Contact No.'
+        autoCorrect = { false }
+        value={this.state.phone}
+        onChangeText={phone => this.setState({ phone })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Contact No.'
-   autoCorrect = { false }
-   value={this.state.phone}
-   onChangeText={phone => this.setState({ phone })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'KMC Registration No.'
+        autoCorrect = { false }
+        value={this.state.kmc}
+        onChangeText={kmc => this.setState({ kmc })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'KMC Registration No.'
-   autoCorrect = { false }
-   value={this.state.kmc}
-   onChangeText={kmc => this.setState({ kmc })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Graduated Medical College'
+        autoCorrect = { false }
+        value={this.state.college}
+        onChangeText={college => this.setState({ college })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= ' Graduated Medical College'
-   autoCorrect = { false }
-   value={this.state.college}
-   onChangeText={college => this.setState({ college })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Residential Address'
+        multiline = { true }
+        autoCorrect = { false }
+        value={this.state.raddr}
+        onChangeText={raddr => this.setState({ raddr })}
+        style = { styles.inputStyle1 }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle1 }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Residential Address'
-   multiline = { true }
-   autoCorrect = { false }
-   value={this.state.raddr}
-   onChangeText={raddr => this.setState({ raddr })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Workplace Address'
+        autoCorrect = { false }
+        value={this.state.waddr}
+        multiline = { true }
+        onChangeText={waddr => this.setState({ waddr })}
+        style = { styles.inputStyle1 }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle1 }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Workplace Address'
-   autoCorrect = { false }
-   value={this.state.waddr}
-   multiline = { true }
-   onChangeText={waddr => this.setState({ waddr })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Additional Qualifications'
+        autoCorrect = { false }
+        value={this.state.qualify}
+        onChangeText={qualify => this.setState({ qualify })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-    <View style = { styles.textContainerStyle }>
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'Additional Qualifications'
-   autoCorrect = { false }
-   value={this.state.qualify}
-   onChangeText={qualify => this.setState({ qualify })}
-   style = { styles.inputStyle }
-    ></TextInput>
-    </View>
+          <View style = { styles.uploadStyle }>
+            <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}}>
+              <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 16}}>{ this.state.uploadText}</Text>
+            </TouchableOpacity>
+          </View>
 
-    <View style = { styles.uploadStyle }>
-      <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}}>
-        <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 16}}>{ this.state.uploadText}</Text>
-      </TouchableOpacity>
-    </View>
-
-    <View>
-      { this.renderButton() }
-    </View>
-  </KeyboardAwareScrollView>
+          <View>
+            { this.renderButton() }
+          </View>
+    </KeyboardAwareScrollView>
   </LinearGradient>
 
     );
@@ -344,16 +323,31 @@ class DoctorSignup extends Component {
 const styles = {
 
     inputStyle: {
-      
-      justifyContent: 'center',
+      backgroundColor: '#fdfdfd',
+      borderRadius: 50,
+      height: 40,
+      width: 300,
+      paddingBottom: 2,
+      paddingTop: 2,
+      flexDirection: 'row',
       alignSelf: 'center',
-      alignItems: 'center',
-      marginLeft: 50,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
+      marginBottom: 15,
       flexWrap: 'wrap',
-      width: 200
+      paddingLeft: 10,
+    },
+
+    inputStyle1: {
+      backgroundColor: '#fdfdfd',
+      borderRadius: 30,
+      height: 100,
+      width: 300,
+      paddingBottom: 2,
+      paddingTop: 2,
+      flexDirection: 'row',
+      alignSelf: 'center',
+      flexWrap: 'wrap',
+      marginBottom: 15,
+      paddingLeft: 10,
     },
 
     uploadStyle: {
@@ -367,79 +361,43 @@ const styles = {
     },
   
     buttonStyle: {
-      color: '#222222',
-      backgroundColor: '#59bfff',
-      borderRadius: 30,
-      width: 100,
-      height: 50,
-      justifyContent: 'center',
-      alignSelf: 'center',
-      marginLeft: 5,
-      marginRight: 5,
-      paddingTop: 10,
-      paddingBottom: 10,
-      marginTop: 10,
-      marginBottom:20
+        color: '#222222',
+        backgroundColor: '#59bfff',
+        borderRadius: 30,
+        width: 100,
+        height: 40,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginLeft: 5,
+        marginRight: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        marginTop: 10,
+        marginBottom:20
     },
   
     textStyle: {
-      alignSelf: 'center',
-          color: '#fff',
-          fontWeight: '600',
-          fontSize: 18,
-          paddingTop: 10,
-          paddingBottom: 10,
+        alignSelf: 'center',
+        color: '#fdfdfd',
+        fontWeight: '600',
+        fontSize: 18,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
   
-    containerStyle: {
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        alignSelf: 'center'
-    },
-  
-    textContainerStyle: {
-      backgroundColor: '#fff',
-      borderRadius: 50,
-      height: 40,
-      width: 300,
-      paddingBottom: 2,
-      paddingTop: 2,
-      flexDirection: 'row',
-      alignSelf: 'center',
-      marginBottom: 15,
-    },
-
-    textContainerStyle1: {
-      backgroundColor: '#fff',
-      borderRadius: 30,
-      height: 100,
-      width: 300,
-      paddingBottom: 2,
-      paddingTop: 2,
-      flexDirection: 'row',
-      alignSelf: 'center',
-      marginBottom: 15,
-    },
-  
-    labelStyle: {
-      fontSize: 18,
-      paddingTop: 9,
-      marginLeft: 10
-   },
-
    spinnerStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 30
   },
   
   imageStyle: {
-    height: 200,
-    width: 200,
-    marginBottom: 30,
-    marginTop: 40,
-    alignSelf: 'center'
+      height: 150,
+      width: 150,
+      marginBottom: 10,
+      marginTop: 50,
+      alignSelf: 'center'
  
   }
   };

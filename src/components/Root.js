@@ -104,7 +104,7 @@ function Root() {
                     <Image source = {require('../Images/request.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
                   
-                  <BottomTab.Screen name = "Responses"
+                  <BottomTab.Screen name = "Status"
                   options = {{tabBarIcon: ({ focused }) => (
                     <Image source = {require('../Images/summary.png')} style = { [styles.imageResponseStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}}>
@@ -132,7 +132,7 @@ function Root() {
                     <Image source = {require('../Images/request.png')} style = { [styles.imageStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}} />
 
-                  <BottomTab.Screen name="Responses"
+                  <BottomTab.Screen name="Status"
                   options = {{tabBarIcon: ({ focused }) => (
                     <Image source = {require('../Images/summary.png')} style = { [styles.imageResponseStyle, {tintColor: focused ? '#59bfff' : '#fdfdfd'}] } />
                   )}}>

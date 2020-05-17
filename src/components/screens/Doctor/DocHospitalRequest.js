@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import HospitaRequestCard from '../../HospitalRequestCard';
+import HospitalRequestCard from '../../HospitalRequestCard';
 import firebase from 'firebase'
 require('firebase/auth')
 
@@ -43,8 +43,43 @@ class DocHospitalRequest extends Component {
         let renderArray = [];
         let reqIDs = Object.keys( this.state.requests );
         for(let i=0; i<reqIDs.length; i++)
-            renderArray.push(<HospitaRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } toggle = { this.toggle.bind(this, reqIDs[i]) }/>)
+        {
+            if(this.state.requests[reqIDs[i]].status==0)
+            {
+                renderArray.push(<HospitalRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
+                toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) } 
+                tickAction = { this.tickAction.bind(this, reqIDs[i]) } />)
+            }
+        }
         return renderArray;
+    }
+
+    acceptRequest(reqID) 
+    {
+        var user = firebase.auth().currentUser
+        var userId = user.uid
+
+        var updateRequests = {};
+        updateRequests['requests/hospital/'+reqID+'/status'] = 1;
+        updateRequests['users/'+userId+'/hospitalrequests/'+reqID] = '';
+        firebase.database().ref().update(updateRequests)
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
+
+    }
+
+    tickAction(reqID) 
+    {
+        console.log("Yaay");
+
+    }
+
+    crossAction(reqID)
+    {
+        console.log("YaayCross");
     }
     
     render()
@@ -53,7 +88,7 @@ class DocHospitalRequest extends Component {
         return(
         <View style = { styles.containerStyle }>
             <ScrollView style = {{ flex: 1 }}>
-                { this.renderList()}
+                {this.renderList()}
             </ScrollView>
         </View>
         );

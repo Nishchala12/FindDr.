@@ -7,36 +7,46 @@ class HospitalRequestCard extends Component {
         if(!this.props.expanded)
             return;
 
-        return(<View style = {{ flexDirection: 'row' }}>
-        <View style = { styles.cardBodyStyle }>
-            <View style = {{flexDirection: 'row'}}> 
-                    <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff', alignSelf:'center' }}>Duty Location:</Text>
-                    <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.location }</Text>
-                </View>
+        return(
+            <View style = {{ flexDirection: 'row' }}>
+            <View style = { [styles.cardBodyStyle, { width: this.props.tickAction ? '78%' : '95%'}] }>
+                <View style = {{flexDirection: 'row'}}> 
+                        <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff', alignSelf:'center' }}>Duty Location:</Text>
+                        <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.location }</Text>
+                    </View>
 
-                <View style = {{flexDirection: 'row'}}>
-                    <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff' }}>Duty Duration:</Text>
-                    <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.duration }</Text>
-                </View>
+                    <View style = {{flexDirection: 'row'}}>
+                        <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff' }}>Duty Duration:</Text>
+                        <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.duration }</Text>
+                    </View>
 
-                <View style = {{flexDirection: 'row', marginBottom: 10}}>
-                    <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff' }}>Qualifications:</Text>
-                    <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.qualifications }</Text>
+                    <View style = {{flexDirection: 'row', marginBottom: 10}}>
+                        <Text style = {{ fontWeight: 'bold', marginLeft: 10, marginTop: 5, color: '#59bfff' }}>Qualifications:</Text>
+                        <Text style = {{ position: 'absolute', right: 10, marginLeft: 10, marginTop: 5 }}>{ this.props.data.qualifications }</Text>
+                </View>
             </View>
-        </View>
-        <View style = { styles.cardButtonStyle }>
-            <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15}}>
-                <Image source = {require('../Images/check.png')}
-                style = { styles.buttonAcceptImageStyle } tintColor ="#59bfff"
-                />
-            </TouchableOpacity >
-            <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }}>
-                <Image source = {require('../Images/cross.png')}
-                style = { styles.buttonDeclineImageStyle } tintColor ="#696969"
-                />
-            </TouchableOpacity>
-        </View>
-    </View>);
+            <View style = { [styles.cardButtonStyle,
+                        { backgroundColor: this.props.tickAction ? '#fdfdfd' : null },
+                        { elevation: this.props.tickAction ? 5 : null }
+                    ] }>
+                <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }} onPress = { () => this.props.acceptRequest() }>
+                    { this.props.tickAction ?
+                    <Image source = {require('../Images/check.png')}
+                    style = { styles.buttonAcceptImageStyle } tintColor ="#59bfff"
+                    />
+                    : null
+                    }       
+                </TouchableOpacity >
+                <TouchableOpacity style = {{ marginLeft: 15, marginRight: 15 }}>
+                    { this.props.crossAction ?  
+                    <Image source = {require('../Images/cross.png')}
+                    style = { styles.buttonDeclineImageStyle } tintColor ="#696969"
+                    />
+                    : null
+                    } 
+                </TouchableOpacity>
+            </View>
+        </View>);
     }
 
     render() {
@@ -52,7 +62,7 @@ class HospitalRequestCard extends Component {
                              <Text style = {{ marginRight: 5 }}> <Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff' }}>Doctor Name: {'\n' } </Text>{ this.props.data.doctorname }</Text>
                         </View>
                         <View style = {{width: 170}}>
-                            <Text style = {{paddingBottom: 5, paddingRight: 5 }}> <Text style = {{ fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' } </Text>{ this.props.data.hospitalname } { '\n' } { this.props.data.hospitaladdress } </Text>
+                            <Text style = {{paddingBottom: 5, paddingRight: 10 }}><Text style = {{ fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' }</Text>{this.props.data.hospitalname }{'\n'}{this.props.data.hospitaladdress}</Text>
                         </View>
                     </TouchableOpacity>
                     { this.expandCard() }

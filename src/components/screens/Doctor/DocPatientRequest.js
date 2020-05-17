@@ -43,10 +43,46 @@ class DocPatientRequest extends Component {
         let renderArray = [];
         let reqIDs = Object.keys( this.state.requests );
         for(let i=0; i<reqIDs.length; i++)
-            renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } toggle = { this.toggle.bind(this, reqIDs[i]) }/>)
-        return renderArray;
+        {
+            if(this.state.requests[reqIDs[i]].status==0)
+            {
+                renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
+                toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) } 
+                tickAction = { this.tickAction.bind(this, reqIDs[i]) }/>)
+            }
+
+        }
+            return renderArray;
     }
     
+    acceptRequest(reqID) 
+    {
+        var user = firebase.auth().currentUser
+        var userId = user.uid
+
+        var updateRequests = {};
+        updateRequests['requests/patient/'+reqID+'/status'] = 1;
+        updateRequests['users/'+userId+'/patientrequests/'+reqID] = '';
+        firebase.database().ref().update(updateRequests)
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
+
+    }
+
+    tickAction(reqID) 
+    {
+        console.log("Yaay");
+
+    }
+
+    crossAction(reqID)
+    {
+        console.log("YaayCross");
+    }
+
     render()
     {
 
