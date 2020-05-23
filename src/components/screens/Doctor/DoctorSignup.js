@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator, Dimensions, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-simple-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -7,6 +7,10 @@ import ImagePicker from 'react-native-image-picker';
 import firebase from 'firebase'
 require('firebase/auth')
 
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
 
 class DoctorSignup extends Component {
     state = {
@@ -23,24 +27,30 @@ class DoctorSignup extends Component {
         waddr: '',
         qualify: '',
         uploadText: 'Upload Profile Photo (Optional)',
-        photo: null
+        photo: ''
     } 
 
 
     handleSignUp = () => {
+      if(this.state.name == ''||this.state.email == ''||this.state.password == ''||this.state.kmc == ''||this.state.dob == ''||this.state.age == ''||this.state.phone == ''||this.state.college == ''||this.state.raddr == ''||this.state.waddr == ''||this.state.qualify == '')
+          Toast.show("Kindly fill in all the fields.")
+      else {
+        if(this.state.password.length != 6)
+          {
+            Toast.show('Password should be atleast 6 characters')
+            return;
+          }
         const { email, password } = this.state
 
         this.setState({ loading: true })
         firebase.auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {Toast.show('Signed Up Successfully')
+            .then(() => {
                         var user = firebase.auth().currentUser
                         var userId = user.uid
                         this.writeUserData(userId, this.state.name, this.state.email, 1, this.state.kmc, 
                             this.state.dob, this.state.age, this.state.phone, this.state.college, this.state.raddr,
-                            this.state.waddr, this.state.qualify)
-                        this.setState({ loading: false })
-                         this.props.navigation.navigate('DoctorLoggedIn')
+                            this.state.waddr, this.state.qualify, this.state.photo)
                           })
             .catch(error =>{this.setState({ loading: false})
                             Toast.show('Signup Error')
@@ -48,6 +58,7 @@ class DoctorSignup extends Component {
                         })
 
                       }
+     }
 
 
   uploadPhoto = () => { 
@@ -100,7 +111,7 @@ class DoctorSignup extends Component {
   }
       
   
-  /*uriToBlob = (uri) => {
+  uriToBlob = (uri) => {
 
     return new Promise((resolve, reject) => {
 
@@ -130,9 +141,7 @@ class DoctorSignup extends Component {
 
     return new Promise((resolve, reject)=>{
       
-      var storageRef = firebase.storage().ref('/profile/');
-
-      storageRef.child('uploads/photo.jpg').put(blob, {
+      firebase.storage().ref('/profile/'+firebase.auth().currentUser.uid+'.jpg').put(blob, {
         contentType: 'image/jpeg'
       }).then((snapshot)=>{
 
@@ -149,31 +158,69 @@ class DoctorSignup extends Component {
     });
 
 
-  }  */    
+  }      
 
 
-   writeUserData( userId, name, email, role, kmc, dob, age, phone, college, raddr, waddr, qualify)
+   writeUserData( userId, name, email, role, kmc, dob, age, phone, college, raddr, waddr, qualify, photo )
    {
-    firebase.database().ref('users/'+userId).set ({
-      name: name,
-      email: email,
-      role: role,
-      kmc: kmc,
-      DOB: dob,
-      age: age,
-      phone: phone,
-      college:college,
-      raddr: raddr,
-      waddr: waddr,
-      qualifications: qualify
-    }).then(()=>{
-            console.log('Success');
-            this.setState({ name: '',email: '', password: '', kmc: '', dob: '', 
-            age: '', phone: '', waddr: '', raddr: '' , college: '', qualify: ''})
-        }).catch((error)=>{
-            //error callback
-            console.log('error ' , error);
+      if(this.state.photo != '') {
+      let imageRef = firebase.storage().ref('/profile/'+firebase.auth().currentUser.uid+'.jpg')
+      this.uriToBlob(this.state.photo)
+        .then((blob)=>{
+          return this.uploadToFirebase(blob);
+        }).then((snapshot)=>{
+          console.log(snapshot)
+           return imageRef.getDownloadURL()
+        }).then(async (url) => {
+            console.log(url)
+            await firebase.database().ref('users/'+userId).set ({
+              name: name,
+              email: email,
+              role: role,
+              photo: url,
+              kmc: kmc,
+              DOB: dob,
+              age: age,
+              phone: phone,
+              college:college,
+              raddr: raddr,
+              waddr: waddr,
+              qualifications: qualify
+            }).then(()=>{
+                    this.setState({ name: '',email: '', password: '', kmc: '', dob: '', 
+                    age: '', phone: '', waddr: '', raddr: '' , college: '', qualify: ''})
+                }).catch((error)=>{
+                    //error callback
+                    console.log('error ' , error);
+                })
+        }) 
+        .catch((error)=>{
+          console.log(error)
+          Toast.show('Sign Up not Successful')
         })
+      }
+      else {
+        firebase.database().ref('users/'+userId).set ({
+          name: name,
+          email: email,
+          role: role,
+          photo: photo,
+          kmc: kmc,
+          DOB: dob,
+          age: age,
+          phone: phone,
+          college:college,
+          raddr: raddr,
+          waddr: waddr,
+          qualifications: qualify
+        }).then(()=>{
+                this.setState({ name: '',email: '', password: '', kmc: '', dob: '', 
+                age: '', phone: '', waddr: '', raddr: '' , college: '', qualify: ''})
+            }).catch((error)=>{
+                //error callback
+                console.log('error ' , error);
+            })
+      }
     } 
   
     renderButton() {
@@ -196,11 +243,11 @@ class DoctorSignup extends Component {
     {
     return(
     <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-      <KeyboardAwareScrollView>
+      <ScrollView>
         <Image source = {require('../../../Images/doctor.png')}
         style = { styles.imageStyle } tintColor ="#59bfff"
         />
-        <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 30}}>Sign Up as a Doctor!</Text>
+        <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*30}}>Sign Up as a Doctor!</Text>
     
         <TextInput
         secureTextEntry = { false }
@@ -313,7 +360,7 @@ class DoctorSignup extends Component {
           <View>
             { this.renderButton() }
           </View>
-    </KeyboardAwareScrollView>
+    </ScrollView>
   </LinearGradient>
 
     );
@@ -325,13 +372,13 @@ const styles = {
     inputStyle: {
       backgroundColor: '#fdfdfd',
       borderRadius: 50,
-      height: 40,
-      width: 300,
+      height: hf*40,
+      width: wf*300,
       paddingBottom: 2,
       paddingTop: 2,
       flexDirection: 'row',
       alignSelf: 'center',
-      marginBottom: 15,
+      marginBottom: hf*15,
       flexWrap: 'wrap',
       paddingLeft: 10,
     },
@@ -339,41 +386,41 @@ const styles = {
     inputStyle1: {
       backgroundColor: '#fdfdfd',
       borderRadius: 30,
-      height: 100,
-      width: 300,
+      height: hf*100,
+      width: wf*300,
       paddingBottom: 2,
       paddingTop: 2,
       flexDirection: 'row',
       alignSelf: 'center',
       flexWrap: 'wrap',
-      marginBottom: 15,
+      marginBottom: hf*15,
       paddingLeft: 10,
     },
 
     uploadStyle: {
         alignSelf: 'center',
-        marginTop: 15,
-        marginBottom: 15,
+        marginTop: hf*15,
+        marginBottom: hf*15,
     },
 
     gradientStyle: {
-      height: 670
+      height: '100%'
     },
   
     buttonStyle: {
         color: '#222222',
         backgroundColor: '#59bfff',
         borderRadius: 30,
-        width: 100,
-        height: 40,
+        width: wf*100,
+        height: hf*40,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginLeft: 5,
-        marginRight: 5,
+        marginLeft: wf*5,
+        marginRight: wf*5,
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 10,
-        marginBottom:20
+        marginTop: hf*10,
+        marginBottom: hf*20
     },
   
     textStyle: {
@@ -389,14 +436,14 @@ const styles = {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 30
+      marginTop: hf*30
   },
   
   imageStyle: {
-      height: 150,
-      width: 150,
-      marginBottom: 10,
-      marginTop: 50,
+      height: hf*150,
+      width: wf*150,
+      marginBottom: hf*10,
+      marginTop: hf*50,
       alignSelf: 'center'
  
   }

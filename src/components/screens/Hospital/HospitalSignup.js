@@ -1,33 +1,48 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator, Dimensions, ScrollView } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ImagePicker from 'react-native-image-picker';
 import firebase from 'firebase'
 require('firebase/auth')
 
+
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
+
 class HospitalSignup extends Component {
     state = {
-        hname: '',
         dname: '',
         email: '',
         password: '',
-        loading: false
+        phone: '',
+        loading: false,
+        uploadText: 'Upload Profile Photo (Optional)',
+        photo: ''
     } 
 
 
     handleSignUp = () => {
+      if(this.state.dname == ''||this.state.phone == ''||this.state.email == ''||this.state.password == '')
+          Toast.show("Kindly fill in all the fields.")
+      else {
+        if(this.state.password.length != 6)
+          {
+            Toast.show('Password should be atleast 6 characters')
+            return;
+          }
         const { email, password } = this.state
 
         this.setState({ loading: true })
         firebase.auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {Toast.show('Signed Up Successfully')
+            .then(() => {
                         var user = firebase.auth().currentUser
                         var userId = user.uid
-                        this.writeUserData(userId, this.state.hname, this.state.dname, this.state.email, 2)
-                        this.setState({ loading: false })
-                         this.props.navigation.navigate('HospitalLoggedIn')
+                        this.writeUserData(userId, this.state.dname, this.state.email, this.state.phone, 2, this.state.photo)
                           })
             .catch(error =>{this.setState({ loading: false})
                             Toast.show('Signup Error')
@@ -35,23 +50,153 @@ class HospitalSignup extends Component {
                         })
 
                       }
+      }
+
+      uploadPhoto = () => { 
+
+        if(this.state.uploadText=='Upload Profile Photo (Optional)')
+        {
+          const options ={ noData: true }
+          ImagePicker.launchImageLibrary(options, response => {
+            console.log('response', response);
+            if(response.didCancel)
+            {
+            this.setState({uploadText: 'Upload Profile Photo (Optional)'})
+            }
+            else if(response.error)
+            {
+              Toast.show('Error while uploading. Try Again.')
+            }
+            else
+            {
+            this.setState({uploadText: 'Choose Another Photo', photo: response.uri})
+            
+            }  
+    
+          });
+      
+        }
+        else
+        {
+          const options ={ noData: true }
+          ImagePicker.launchImageLibrary(options, response => {
+            console.log('response', response);
+            if(response.didCancel)
+            {
+            this.setState({uploadText: 'Choose Another Photo'})
+            }
+            else if(response.error)
+            {
+              Toast.show('Error while uploading. Try Again.')
+            }
+            else
+            {
+            this.setState({uploadText: 'Choose Another Photo', photo: response.uri})
+    
+            
+            }  
+    
+          });
+      
+        }
+      }
+          
+      
+      uriToBlob = (uri) => {
+    
+        return new Promise((resolve, reject) => {
+    
+          const xhr = new XMLHttpRequest();
+    
+          xhr.onload = function() {
+            // return the blob
+            resolve(xhr.response);
+          };
+          
+          xhr.onerror = function() {
+            // something went wrong
+            reject(new Error('uriToBlob failed'));
+          };
+    
+          // this helps us get a blob
+          xhr.responseType = 'blob';
+    
+          xhr.open('GET', uri, true);
+          xhr.send(null);
+    
+        });
+    
+      }
+    
+      uploadToFirebase = (blob) => {
+    
+        return new Promise((resolve, reject)=>{
+          
+          firebase.storage().ref('/profile/'+firebase.auth().currentUser.uid+'.jpg').put(blob, {
+            contentType: 'image/jpeg'
+          }).then((snapshot)=>{
+    
+            blob.close();
+    
+            resolve(snapshot);
+    
+          }).catch((error)=>{
+    
+            reject(error);
+    
+          });
+    
+        });
+    
+    
+      }      
 
 
-   writeUserData( userId, hname, dname, email, role)
-   {
-    firebase.database().ref('users/'+userId).set ({
-      hname: hname,
-      dname: dname,
-      email: email,
-      role: role
-    }).then(()=>{
-            console.log('Success');
-            this.setState({ hname: '', dname: '',email: '', password: '' })
-        }).catch((error)=>{
-            //error callback
-            console.log('error ' , error);
-        })
-    } 
+      writeUserData( userId, dname, email, phone, role, photo )
+      {
+         if(this.state.photo != '') {
+         let imageRef = firebase.storage().ref('/profile/'+firebase.auth().currentUser.uid+'.jpg')
+         this.uriToBlob(this.state.photo)
+           .then((blob)=>{
+             return this.uploadToFirebase(blob);
+           }).then((snapshot)=>{
+             console.log(snapshot)
+              return imageRef.getDownloadURL()
+           }).then(async (url) => {
+               console.log(url)
+               await firebase.database().ref('users/'+userId).set ({
+                 dname: dname,
+                 email: email,
+                 role: role,
+                 photo: url,
+                 phone: phone,
+               }).then(()=>{
+                       this.setState({ dname: '', email: '', password: '' , phone: '' })
+                   }).catch((error)=>{
+                       //error callback
+                       console.log('error ' , error);
+                   })
+           }) 
+           .catch((error)=>{
+             console.log(error)
+             Toast.show('Sign Up not Successful')
+           })
+         }
+         else {
+           firebase.database().ref('users/'+userId).set ({
+             dname: dname,
+             email: email,
+             role: role,
+             photo: photo,
+             phone: phone,
+           }).then(()=>{
+                   this.setState({ dname: '', email: '', password: '', phone: '' })
+               }).catch((error)=>{
+                   //error callback
+                   console.log('error ' , error);
+               })
+         }
+       } 
   
     renderButton() {
       if(this.state.loading)
@@ -72,56 +217,62 @@ class HospitalSignup extends Component {
     render()
     {
     return(
-    <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-  <KeyboardAwareScrollView>
-      <Image source = {require('../../../Images/hospital.png')}
-      style = { styles.imageStyle } tintColor ="#59bfff"
-      />
-      <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 30}}>Sign Up as a Hospital!</Text>
-    
-      <TextInput
-      secureTextEntry = { false }
-      placeholder= 'Hospital Name'
-      autoCorrect = { false }
-      value={this.state.hname}
-      onChangeText={hname => this.setState({ hname })}
-      style = { styles.inputStyle }
+      <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
+       <ScrollView>
+        <Image source = {require('../../../Images/hospital.png')}
+        style = { styles.imageStyle } tintColor ="#59bfff"
+        />
+        <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*30}}>Sign Up as a Hospital!</Text>
+
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Doctor - Full Name'
+        autoCorrect = { false }
+        value={this.state.dname}
+        onChangeText={dname => this.setState({ dname })}
+        style = { styles.inputStyle }
+          ></TextInput>
+
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'user@gmail.com'
+        autoCorrect = { false }
+        value={this.state.email}
+        onChangeText={email => this.setState({ email })}
+          autoCapitalize='none'
+        style = { styles.inputStyle }
+          ></TextInput>
+
+        <TextInput
+        secureTextEntry = { true }
+        placeholder= 'password'
+        autoCorrect = { false }
+        value={this.state.password}
+          onChangeText={password => this.setState({ password })}
+        style = { styles.inputStyle }
         ></TextInput>
 
-      <TextInput
-      secureTextEntry = { false }
-      placeholder= 'Doctor - Full Name'
-      autoCorrect = { false }
-      value={this.state.dname}
-      onChangeText={dname => this.setState({ dname })}
-      style = { styles.inputStyle }
-        ></TextInput>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Contact No.'
+        autoCorrect = { false }
+        value={this.state.phone}
+        onChangeText={phone => this.setState({ phone })}
+        style = { styles.inputStyle }
+          ></TextInput>
 
-      <TextInput
-      secureTextEntry = { false }
-      placeholder= 'user@gmail.com'
-      autoCorrect = { false }
-      value={this.state.email}
-      onChangeText={email => this.setState({ email })}
-        autoCapitalize='none'
-      style = { styles.inputStyle }
-        ></TextInput>
+          <View style = { styles.uploadStyle }>
+            <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}}>
+              <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 16}}>{ this.state.uploadText}</Text>
+            </TouchableOpacity>
+          </View>
 
-      <TextInput
-      secureTextEntry = { true }
-      placeholder= 'password'
-      autoCorrect = { false }
-      value={this.state.password}
-        onChangeText={password => this.setState({ password })}
-      style = { styles.inputStyle }
-      ></TextInput>
+          <View>
+            { this.renderButton() }
+          </View>
 
-
-        <View>
-          { this.renderButton() }
-        </View>
-    </KeyboardAwareScrollView>
-  </LinearGradient>
+        </ScrollView>
+      </LinearGradient>
 
     );
     }
@@ -134,13 +285,13 @@ const styles = {
         paddingLeft: 10,
         backgroundColor: '#fdfdfd',
         borderRadius: 50,
-        height: 40,
-        width: 300,
+        height: hf*40,
+        width: wf*300,
         paddingBottom: 2,
         paddingTop: 2,
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15,
+        marginBottom: hf*15,
 
     },
   
@@ -148,16 +299,22 @@ const styles = {
         color: '#222222',
         backgroundColor: '#59bfff',
         borderRadius: 30,
-        width: 100,
-        height: 40,
+        width: wf*100,
+        height: hf*40,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginLeft: 5,
-        marginRight: 5,
+        marginLeft: wf*5,
+        marginRight: wf*5,
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 10,
-        marginBottom: 20
+        marginTop: hf*10,
+        marginBottom: hf*20
+    },
+
+    uploadStyle: {
+        alignSelf: 'center',
+        marginTop: hf*15,
+        marginBottom: hf*15,
     },
   
     textStyle: {
@@ -170,22 +327,22 @@ const styles = {
     },
 
    gradientStyle: {
-      height: 670
+        height: '100%'
    },
 
    spinnerStyle: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 30
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: hf*30
   },
   
   imageStyle: {
-      height: 130,
-      width: 130,
-      marginBottom: 30,
-      marginTop: 50,
-      alignSelf: 'center'
+        height: hf*130,
+        width: wf*130,
+        marginBottom: hf*30,
+        marginTop: hf*50,
+        alignSelf: 'center'
  
   }
   };

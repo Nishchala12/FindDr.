@@ -4,12 +4,11 @@ import PatientRequestCard from '../../PatientRequestCard';
 import firebase from 'firebase'
 require('firebase/auth')
 
-
-
 class DocPatientRequest extends Component {
     state = {
         requests: {},
         expanded: {},
+        colors: {},
 
     }
     
@@ -21,9 +20,13 @@ class DocPatientRequest extends Component {
                 this.setState({ requests: r.val() }, () => {
                     let reqIDs = Object.keys( this.state.requests );
                     let temp = {};
+                    let col = {};
                     for(let i=0; i<reqIDs.length; i++)
+                    {
                         temp[reqIDs[i]] = false
-                    this.setState({ expanded: temp })
+                        col[reqIDs[i]] = '#ccc'
+                    }
+                    this.setState({ expanded: temp, colors: col })
                 })
             }    
         })
@@ -47,15 +50,15 @@ class DocPatientRequest extends Component {
             if(this.state.requests[reqIDs[i]].status==0)
             {
                 renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
-                toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) } 
-                tickAction = { this.tickAction.bind(this, reqIDs[i]) }/>)
+                toggle = { this.toggle.bind(this, reqIDs[i]) } tickAction = { this.tickAction.bind(this, reqIDs[i]) } 
+                colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }/>)
             }
 
         }
             return renderArray;
     }
     
-    acceptRequest(reqID) 
+    tickAction(reqID) 
     {
         var user = firebase.auth().currentUser
         var userId = user.uid
@@ -70,17 +73,6 @@ class DocPatientRequest extends Component {
                 console.log('error ' , error);
             })
 
-    }
-
-    tickAction(reqID) 
-    {
-        console.log("Yaay");
-
-    }
-
-    crossAction(reqID)
-    {
-        console.log("YaayCross");
     }
 
     render()
@@ -102,35 +94,7 @@ const styles = {
     containerStyle: {
         flex: 1,
     },
-
-    textStyle:{
-        fontSize : 25,
-        fontWeight: '600',
-         textAlign: 'center'
-      },
-
-    textContainerStyle: { 
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 10,
-        borderTopRightRadius: 20,
-        borderBottomLeftRadius: 20,
-        padding:20
-    },
-
-
-    welcomeStyle: {
-        justifyContent: 'flex-start',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        fontWeight: '200',
-        alignItems: 'flex-start',
-        flexDirection: 'row'
-
-    }
+    
 }
 
 

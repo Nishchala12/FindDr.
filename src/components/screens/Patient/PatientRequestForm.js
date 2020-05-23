@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -7,6 +7,10 @@ import ImagePicker from 'react-native-image-picker';
 import firebase from 'firebase'
 require('firebase/auth')
 
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
 
 class PRequests extends Component {
     state = {
@@ -27,7 +31,7 @@ class PRequests extends Component {
     }
 
     importAddress () {
-        this.setState({raddr: this.state.user.raddr})
+        this.setState({raddr: this.state.user.raddr, name: this.state.user.name, email: this.state.user.email, phone: this.state.user.phone })
     }
 
     writeRequestData()
@@ -45,7 +49,7 @@ class PRequests extends Component {
         var userId = user.uid
 
         let obj = {profilename: this.state.user.name, name: this.state.name, age: this.state.age, 
-            email: this.state.email, gender: this.state.gender, 
+            email: this.state.email, gender: this.state.gender, photo: this.state.user.photo,
             phone: this.state.phone, raddr: this.state.raddr, complaints: this.state.complaints, status: 0}
 
         var updateRequests = {};
@@ -68,12 +72,17 @@ class PRequests extends Component {
     {
     return(
     <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-        <KeyboardAwareScrollView>
+        <ScrollView>
+            
             <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
             />
 
-            <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: 20}}>Enter Patient's Details</Text>
+            <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*20}}>Enter Patient's Details</Text>
+            
+            <TouchableOpacity style = {styles.importButtonStyle} onPress={() => {this.importAddress()}}>
+                <Text style ={{color: "#59bfff", fontSize: 14, fontWeight: 'bold'}}>Same as Profile</Text>
+            </TouchableOpacity>
 
             <TextInput
             placeholder = ' Full Name'
@@ -114,11 +123,6 @@ class PRequests extends Component {
             onChangeText={gender => this.setState({ gender })}
             style = { styles.inputStyle }
             ></TextInput>
-       
-
-            <TouchableOpacity style = {styles.importButtonStyle} onPress={() => {this.importAddress()}}>
-                <Text style ={{color: "#59bfff", fontSize: 14, fontWeight: 'bold'}}>Import from Profile</Text>
-            </TouchableOpacity>
 
             <TextInput
             placeholder= 'Residential Address'
@@ -143,7 +147,7 @@ class PRequests extends Component {
                 <Text style ={styles.textStyle}>Submit</Text>
             </TouchableOpacity>
 
-    </KeyboardAwareScrollView>
+    </ScrollView>
   </LinearGradient>
     );
    
@@ -156,13 +160,13 @@ const styles = {
         flexWrap: 'wrap',
         backgroundColor: '#fdfdfd',
         borderRadius: 50,
-        height: 40,
-        width: 300,
+        height: hf*40,
+        width: wf*300,
         paddingBottom: 2,
         paddingTop: 2,
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15,
+        marginBottom: hf*15,
         paddingLeft: 10
       
     },
@@ -170,18 +174,18 @@ const styles = {
     inputStyle1: {
         backgroundColor: '#fdfdfd',
         borderRadius: 30,
-        height: 100,
-        width: 300,
+        height: hf*100,
+        width: wf*300,
         paddingBottom: 2,
         paddingTop: 2,
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15,
+        marginBottom: hf*15,
         paddingLeft: 10
     },
 
     gradientStyle: {
-        height: 670
+        height: '100%'
     },
 
     logoutStyle: {
@@ -193,28 +197,28 @@ const styles = {
         color: '#222222',
         backgroundColor: '#59bfff',
         borderRadius: 30,
-        width: 100,
-        height: 40,
+        width: wf*100,
+        height: hf*40,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginLeft: 5,
-        marginRight: 5,
+        marginLeft: wf*5,
+        marginRight: wf*5,
         paddingTop: 10,
         paddingBottom: 10,
-        marginTop: 5,
-        marginBottom: 25
+        marginTop: hf*5,
+        marginBottom: hf*25
     },
 
     textContainerStyle1: {
         backgroundColor: '#fdfdfd',
         borderRadius: 30,
-        height: 100,
-        width: 300,
+        height: hf*100,
+        width: wf*300,
         paddingBottom: 2,
         paddingTop: 2,
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15,
+        marginBottom: hf*15,
       },
   
     textStyle: {
@@ -235,39 +239,39 @@ const styles = {
     textContainerStyle: {
         backgroundColor: '#fdfdfd',
         borderRadius: 50,
-        height: 40,
-        width: 300,
+        height: hf*40,
+        width: wf*300,
         paddingBottom: 2,
         paddingTop: 2,
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15,
+        marginBottom: hf*15,
     },
 
     importButtonStyle: {
         alignSelf: 'flex-end',
-        marginRight: 60,
-        marginBottom: 5
+        marginRight: wf*60,
+        marginBottom: hf*5
     },
   
     labelStyle: {
         fontSize: 18,
         paddingTop: 9,
-        marginLeft: 10
+        marginLeft: wf*10
    },
 
    spinnerStyle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: hf*30
     },
   
    imageStyle: {
-        height: 100,
-        width: 100,
-        marginBottom: 30,
-        marginTop: 30,
+        height: hf*100,
+        width: wf*100,
+        marginBottom: hf*30,
+        marginTop: hf*30,
         alignSelf: 'center'
   
    }

@@ -4,10 +4,10 @@ import Root from './src/components/Root';
 import firebase from 'firebase'
 require('firebase/auth')
 
-
 class App extends Component {
 
  componentDidMount() {
+  //firebase.auth().signOut()
   if (!firebase.apps.length)
   {
     firebase.initializeApp

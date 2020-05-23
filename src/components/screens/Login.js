@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-simple-toast';
 import firebase from 'firebase'
 require('firebase/auth')
 
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
 
 class Login extends Component {
     state = {
         email: '',
         password: '',
         loading: false,
-        loggedin: null,
+        loggedin: true,
     }
 
     componentDidMount() {
@@ -45,6 +48,11 @@ class Login extends Component {
           }
       });
 
+      console.log(phoneHeight)
+      console.log(phoneWidth)
+      console.log(hf)
+      console.log(wf)
+
 
 
     }
@@ -65,15 +73,14 @@ class Login extends Component {
 
 
     onLoginSuccess() {
-      Toast.show("Logged In Successfully!")
       firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (user) =>{
         this.setState({ user: user.val() })
-      if(user.val().role==0)
+      if(user.val() && user.val() != null && user.val().role==0)
         this.props.navigation.navigate('PatientLoggedIn')
-      else if(user.val().role==1)
-       this.props.navigation.navigate('DoctorLoggedIn')
-      else if(user.val().role==2)
-       this.props.navigation.navigate('HospitalLoggedIn')
+      else if(user.val() && user.val() != null && user.val().role==1)
+        this.props.navigation.navigate('DoctorLoggedIn')
+      else if(user.val() && user.val() != null && user.val().role==2)
+        this.props.navigation.navigate('HospitalLoggedIn')
       })
       this.setState({email: '', password: '', loading: false})
     }
@@ -95,11 +102,14 @@ class Login extends Component {
     }
 
     render(){
-       if (this.state.loggedin==null)
+       if (this.state.loggedin)
       {
         return(
-          <View style = {{justifyContent: 'center', alignItems: 'center', width:300, height: 700, alignSelf: 'center'}}>
-          <ActivityIndicator size = { "large" } color = "#59bfff"/>
+          <View style = {{ alignItems: 'center', height: '100%', alignSelf: 'center'}}>
+            <Image source = {require('../../Images/logo.png')}
+            style = { [styles.imageStyle, {marginTop: hf*150}] }
+            />
+            <ActivityIndicator size = { "large" } color = "#59bfff"/>
           </View>
         );
       }
@@ -107,9 +117,8 @@ class Login extends Component {
       {
     return(
       <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-  <KeyboardAwareScrollView>
-    <Image source = {require('../../Images/doctor.png')}
-    style = { styles.imageStyle } tintColor='#59bfff'
+    <Image source = {require('../../Images/logo.png')}
+    style = { styles.imageStyle }
     />
 
    <TextInput
@@ -120,7 +129,7 @@ class Login extends Component {
    autoCapitalize='none'
    onChangeText={email => this.setState({ email })}
    style = { styles.inputStyle }
-    ></TextInput>
+   ></TextInput>
 
    <TextInput
    secureTextEntry = { true }
@@ -140,7 +149,6 @@ class Login extends Component {
     <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 15}}>New User? Get started here!</Text>
                 </TouchableOpacity>
     </View>
-  </KeyboardAwareScrollView>
   </LinearGradient>
 
     );
@@ -154,35 +162,35 @@ const styles = {
     inputStyle: {
       backgroundColor: '#fdfdfd',
       borderRadius: 50,
-      height: 40,
-      width: 300,
+      height: hf*40,
+      width: wf*300,
       paddingBottom: 2,
       paddingTop: 2,
       flexDirection: 'row',
       alignSelf: 'center',
-      marginBottom: 15,
-      marginTop: 2,
+      marginBottom: hf*15,
+      marginTop: hf*2,
       paddingLeft: 10,
       flexWrap: 'wrap'
     },
 
     gradientStyle: {
-      height: 800
+      height: '100%'
     },
   
     buttonStyle: {
       color: '#222222',
       backgroundColor: '#59bfff',
       borderRadius: 30,
-      width: 100,
-      height: 40,
+      width: wf*100,
+      height: hf*40,
       justifyContent: 'center',
       alignSelf: 'center',
-      marginLeft: 5,
-      marginRight: 5,
+      marginLeft: wf*5,
+      marginRight: wf*5,
       paddingTop: 7,
       paddingBottom: 10,
-      marginTop: 10
+      marginTop: hf*10
     },
   
     textStyle: {
@@ -203,21 +211,21 @@ const styles = {
     labelStyle: {
       fontSize: 18,
       paddingTop: 9,
-      marginLeft: 10
+      marginLeft: wf*10
    },
 
    spinnerStyle: {
      flex: 1,
      justifyContent: 'center',
      alignItems: 'center',
-     marginTop: 30
+     marginTop: hf*30
    },
   
    imageStyle: {
-     height: 200,
-     width: 200,
-     marginBottom: 50,
-     marginTop: 70,
+     height: hf*200,
+     width: wf*200,
+     marginBottom: hf*50,
+     marginTop: hf*70,
      alignSelf: 'center'
   
    },
@@ -225,7 +233,7 @@ const styles = {
    logoutStyle: {
     alignSelf: 'center', 
     alignItems: 'center',
-    marginTop: 40
+    marginTop: hf*40
   },
   };
 

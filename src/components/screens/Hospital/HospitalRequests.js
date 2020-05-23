@@ -9,6 +9,7 @@ class HospitalRequests extends Component {
         requests: {},
         myrequests: {},
         expanded: {},
+        colors: {},
 
     }
     
@@ -23,10 +24,14 @@ class HospitalRequests extends Component {
                         this.setState({ requests: r.val(), myrequests: mr.val() },  () => {
                             let reqIDs = Object.keys( this.state.myrequests );
                             let temp = {};
+                            let col = {};
                             for(let i=0; i<reqIDs.length; i++)
+                            {
                                 temp[reqIDs[i]] = false
-                            this.setState({ expanded: temp })
-                        })
+                                col[reqIDs[i]] = '#ccc'
+                            }
+                            this.setState({ expanded: temp, colors: col })
+                                })
                     }
                     else
                     {
@@ -53,26 +58,9 @@ class HospitalRequests extends Component {
         for(let i=0; i<reqIDs.length; i++)
         {
                 renderArray.push(<HospitalRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
-                    toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) } />)
+                    toggle = { this.toggle.bind(this, reqIDs[i]) }  colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }/>)
         }
         return renderArray;
-    }
-
-    acceptRequest(reqID) 
-    {
-        console.log("Yaay");
-
-    }
-
-    tickAction(reqID) 
-    {
-        console.log("Yaay");
-
-    }
-
-    crossAction(reqID)
-    {
-        console.log("YaayCross");
     }
 
     

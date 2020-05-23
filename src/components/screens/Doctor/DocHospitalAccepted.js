@@ -4,12 +4,12 @@ import HospitalRequestCard from '../../HospitalRequestCard';
 import firebase from 'firebase'
 require('firebase/auth')
 
-
 class DocHospitalAccepted extends Component {
     state = {
         requests: {},
         myrequests: {},
         expanded: {},
+        colors: {},
 
     }
     
@@ -24,9 +24,18 @@ class DocHospitalAccepted extends Component {
                         this.setState({ requests: r.val(), myrequests: mr.val() },  () => {
                             let reqIDs = Object.keys( this.state.myrequests );
                             let temp = {};
+                            let col = {};
                             for(let i=0; i<reqIDs.length; i++)
+                            {
                                 temp[reqIDs[i]] = false
-                            this.setState({ expanded: temp })
+                                if(this.state.requests[reqIDs[i]].status==1)
+                                    col[reqIDs[i]] = '#ccc'
+                                else if(this.state.requests[reqIDs[i]].status==2)
+                                    col[reqIDs[i]] = '#d0f0c0'
+                                else if(this.state.requests[reqIDs[i]].status==3)
+                                 col[reqIDs[i]] = '#ffcccb'
+                            }
+                            this.setState({ expanded: temp, colors: col })
                         })
                     }
                     else
@@ -53,33 +62,30 @@ class DocHospitalAccepted extends Component {
         let reqIDs = Object.keys( this.state.myrequests );
         for(let i=0; i<reqIDs.length; i++)
         {
-            if(this.state.requests[reqIDs[i]].status==1)
+            if(this.state.requests[reqIDs[i]].status==1||this.state.requests[reqIDs[i]].status==2||this.state.requests[reqIDs[i]].status==3)
             {
                 renderArray.push(<HospitalRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
-                    toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) }/>)
+                    toggle = { this.toggle.bind(this, reqIDs[i]) }  colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }
+                    crossAction = { this.crossAction.bind(this, reqIDs[i]) }/>)
             }
         }
         return renderArray;
     }
 
-    acceptRequest(reqID) 
-    {
-        console.log("Yaay");
-
+    crossAction(id) {
+        let t = this.state.colors
+        t[id]='#ffcccb'
+        this.setState({ colors: t })
+        firebase.database().ref('requests/hospital/'+id).update({
+            status: 0
+        })
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
     }
-
-    tickAction(reqID) 
-    {
-        console.log("Yaay");
-
-    }
-
-    crossAction(reqID)
-    {
-        console.log("YaayCross");
-    }
-
-    
+     
     render()
     {
 

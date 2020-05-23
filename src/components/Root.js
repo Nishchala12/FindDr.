@@ -16,9 +16,8 @@ import HospitalProfile from './screens/Hospital/HospitalProfile';
 import HospitalAccepted from './screens/Hospital/HospitalAccepted';
 import HospitalRequests from './screens/Hospital/HospitalRequests';
 
-
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, Dimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -27,6 +26,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const TopTab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
+
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
+
+
 
 
 function Root() {
@@ -162,40 +169,40 @@ const styles = {
       alignItems: 'center',
       alignSelf: 'center',
       justifyContent: 'center',
-      marginLeft: 20
+      marginLeft: wf*20
     },
 
     imageStyle: {
-      height: 25,
-      width: 25,
+      height: hf*25,
+      width: wf*25,
       tintColor: '#fdfdfd',
     },
 
     imageResponseStyle: {
-      height: 24,
-      width: 40,
-      marginLeft: 10
+      height: hf*24,
+      width: wf*40,
+      marginLeft: wf*10
     },
 
     patientImageStyle: {
-      height: 28,
-      width: 28
+      height: hf*28,
+      width: wf*28
     },
 
     doctorImageStyle: {
-      height: 26,
-      width: 26,
-      marginTop: 5
+      height: hf*26,
+      width: wf*26,
+      marginTop: hf*5
     },
 
     hospitalImageStyle: {
-      height: 23,
-      width: 23,
+      height: hf*23,
+      width: wf*23,
     },
 
     acceptImageStyle: {
-      height: 23,
-      width: 23,
+      height: hf*23,
+      width: wf*23,
     }
 
     

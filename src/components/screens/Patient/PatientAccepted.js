@@ -8,6 +8,7 @@ class PatientAccepted extends Component {
         requests: {},
         myrequests: {},
         expanded: {},
+        colors: {},
 
     }
     
@@ -22,9 +23,18 @@ class PatientAccepted extends Component {
                         this.setState({ requests: r.val(), myrequests: mr.val() },  () => {
                             let reqIDs = Object.keys( this.state.myrequests );
                             let temp = {};
+                            let col = {};
                             for(let i=0; i<reqIDs.length; i++)
+                            {
                                 temp[reqIDs[i]] = false
-                            this.setState({ expanded: temp })
+                                if(this.state.requests[reqIDs[i]].status==1)
+                                    col[reqIDs[i]] = '#ccc'
+                                else if(this.state.requests[reqIDs[i]].status==2)
+                                    col[reqIDs[i]] = '#d0f0c0'
+                                else if(this.state.requests[reqIDs[i]].status==3)
+                                 col[reqIDs[i]] = '#ffcccb'
+                            }
+                            this.setState({ expanded: temp, colors: col })
                         })
                     }
                     else
@@ -44,6 +54,8 @@ class PatientAccepted extends Component {
             t[id] = true
         this.setState({ expanded: t })
     }
+
+    
     
     renderList()
     {
@@ -51,31 +63,43 @@ class PatientAccepted extends Component {
         let reqIDs = Object.keys( this.state.myrequests );
         for(let i=0; i<reqIDs.length; i++)
         {
-            if(this.state.requests[reqIDs[i]].status==1)
+            if(this.state.requests[reqIDs[i]].status==1||this.state.requests[reqIDs[i]].status==2||this.state.requests[reqIDs[i]].status==3)
             {
                 renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
-                    toggle = { this.toggle.bind(this, reqIDs[i]) } acceptRequest = { this.acceptRequest.bind(this, reqIDs[i]) } 
-                    tickAction = { this.tickAction.bind(this, reqIDs[i]) } crossAction = { this.crossAction.bind(this, reqIDs[i]) }/>)
+                    toggle = { this.toggle.bind(this, reqIDs[i]) } colors = { this.state.colors[reqIDs[i]] }
+                    tickAction = { this.tickAction.bind(this, reqIDs[i]) } crossAction = { this.crossAction.bind(this, reqIDs[i]) }
+                    id = { reqIDs[i] }/>)
             }
         }
         return renderArray;
     }
 
-    acceptRequest(reqID) 
-    {
-        console.log("Yaay");
-
+    tickAction(id) {
+        let t = this.state.colors
+        t[id]='#d0c0f0'
+        this.setState({ colors: t })
+        firebase.database().ref('requests/patient/'+id).update({
+            status: 2
+        })
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
     }
 
-    tickAction(reqID) 
-    {
-        console.log("Yaay");
-
-    }
-
-    crossAction(reqID)
-    {
-        console.log("YaayCross");
+    crossAction(id) {
+        let t = this.state.colors
+        t[id]='#ffcccb'
+        this.setState({ colors: t })
+        firebase.database().ref('requests/patient/'+id).update({
+            status: 3
+        })
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
     }
 
     
