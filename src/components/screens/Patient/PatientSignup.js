@@ -4,6 +4,7 @@ import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import firebase from 'firebase'
 require('firebase/auth')
 
@@ -19,17 +20,30 @@ class PatientSignup extends Component {
         password: '',
         loading: false,
         phone: '',
+        age: '',
+        gender: '',
         raddr: '',
-        uploadText: 'Upload Profile Photo (Optional)',
-        photo: ''
+        uploadText: 'Upload Profile Photo',
+        photo: '',
+        msg: '(Optional)'
     } 
 
 
     handleSignUp = () => {
-      if(this.state.name == ''||this.state.phone == ''||this.state.email == ''||this.state.password == ''||this.state.raddr == '')
-          Toast.show("Kindly fill in all the fields.")
+      if(this.state.name == ''||this.state.phone == ''||this.state.email == ''||this.state.password == ''||this.state.raddr == ''||this.state.age == ''||this.state.gender == '')
+          Toast.show("Kindly fill in all the fields")
       else
       {
+        if(this.state.password.length < 6)
+          {
+            Toast.show('Password should be atleast 6 characters')
+            return;
+          }
+        if(this.state.phone.length != 10)
+        {
+            Toast.show('Enter 10 - digit contact number')
+            return;
+        }
         const { email, password } = this.state
 
         this.setState({ loading: true })
@@ -38,10 +52,10 @@ class PatientSignup extends Component {
             .then(() => {
                         var user = firebase.auth().currentUser
                         var userId = user.uid
-                        this.writeUserData(userId, this.state.name, this.state.email, 0, this.state.phone, this.state.raddr, this.state.photo)
+                        this.writeUserData(userId, this.state.name, this.state.email, 0, this.state.phone, this.state.raddr, this.state.photo, this.state.age, this.state.gender)
                           })
             .catch(error =>{this.setState({ loading: false})
-                            Toast.show('Signup Error')
+                            Toast.show('Sign Up error')
                             console.log(error)
                         })
                       }
@@ -50,22 +64,30 @@ class PatientSignup extends Component {
 
     uploadPhoto = () => { 
 
-      if(this.state.uploadText=='Upload Profile Photo (Optional)')
+      if(this.state.uploadText=='Upload Profile Photo')
       {
         const options ={ noData: true }
         ImagePicker.launchImageLibrary(options, response => {
           console.log('response', response);
           if(response.didCancel)
           {
-          this.setState({uploadText: 'Upload Profile Photo (Optional)'})
+          this.setState({uploadText: 'Upload Profile Photo'})
           }
           else if(response.error)
           {
-            Toast.show('Error while uploading. Try Again.')
+            Toast.show('Error while uploading, try again.')
           }
           else
           {
-          this.setState({uploadText: 'Choose Another Photo', photo: response.uri})
+            ImageResizer.createResizedImage(response.uri, 500, 500, 'JPEG', 95 )
+            .then(resp => {
+                console.log('Image resized')
+                console.log(resp.size)
+                console.log(resp.uri)
+                this.setState({uploadText: 'Change Photo', msg: 'Done ✓', photo: resp.uri})
+            }).catch(err => {
+               console.log(err,'Image not resized')
+            });
           
           }  
   
@@ -79,15 +101,23 @@ class PatientSignup extends Component {
           console.log('response', response);
           if(response.didCancel)
           {
-          this.setState({uploadText: 'Choose Another Photo'})
+          this.setState({uploadText: 'Change Photo', msg: 'Done ✓',})
           }
           else if(response.error)
           {
-            Toast.show('Error while uploading. Try Again.')
+            Toast.show('Error while uploading, try again.')
           }
           else
           {
-          this.setState({uploadText: 'Choose Another Photo', photo: response.uri})
+            ImageResizer.createResizedImage(response.uri, 500, 500, 'JPEG', 95 )
+            .then(resp => {
+                console.log('Image resized')
+                console.log(resp.size)
+                console.log(resp.uri)
+                this.setState({uploadText: 'Change Photo', msg: 'Done ✓', photo: resp.uri})
+            }).catch(err => {
+               console.log(err,'Image not resized')
+            });
   
           
           }  
@@ -148,7 +178,7 @@ class PatientSignup extends Component {
     }      
 
 
-    writeUserData( userId, name, email, role, phone, raddr, photo )
+    writeUserData( userId, name, email, role, phone, raddr, photo, age, gender )
     {
        if(this.state.photo != '') {
        let imageRef = firebase.storage().ref('/profile/'+firebase.auth().currentUser.uid+'.jpg')
@@ -166,9 +196,11 @@ class PatientSignup extends Component {
                role: role,
                photo: url,
                phone: phone,
+               age: age,
+               gender: gender,
                raddr: raddr,
              }).then(()=>{
-                     this.setState({ name: '', email: '', password: '', phone: '', raddr: '' })
+                     this.setState({ name: '', email: '', password: '', phone: '', raddr: '', age: '', gender: '' })
                  }).catch((error)=>{
                      //error callback
                      console.log('error ' , error);
@@ -176,7 +208,7 @@ class PatientSignup extends Component {
          }) 
          .catch((error)=>{
            console.log(error)
-           Toast.show('Sign Up not Successful')
+           Toast.show('Sign Up not successful')
          })
        }
        else {
@@ -186,9 +218,11 @@ class PatientSignup extends Component {
            role: role,
            photo: photo,
            phone: phone,
+           age: age,
+           gender: gender,
            raddr: raddr
          }).then(()=>{
-                 this.setState({ name: '', email: '', password: '', phone: '', raddr: '' })
+                 this.setState({ name: '', email: '', password: '', phone: '', raddr: '', age: '', gender: '' })
              }).catch((error)=>{
                  //error callback
                  console.log('error ' , error);
@@ -216,12 +250,15 @@ class PatientSignup extends Component {
     {
     return(
       <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-        <ScrollView>
+        <TouchableOpacity style = {{marginLeft: wf*10, marginTop: hf*10, marginBottom: hf*10}} onPress = {() =>{this.props.navigation.navigate('Login')}}>
+          <Text style = {{fontSize: 18, color: '#59bfff'}}>◀ Login</Text>
+        </TouchableOpacity>
+        <ScrollView keyboardShouldPersistTaps='always'>
           <Image source = {require('../../../Images/patient.png')}
           style = { styles.imageStyle } tintColor ="#59bfff"
           />
-          <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*30}}>Sign Up as a Patient!</Text>
-  
+          <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff'}}>Sign Up as a</Text>
+          <Text style = {{alignSelf:'center', fontSize: 25, fontWeight: 'bold', color: '#59bfff', marginBottom: hf*30}}>PATIENT</Text>
           <TextInput
           secureTextEntry = { false }
           placeholder= 'Full Name'
@@ -233,7 +270,7 @@ class PatientSignup extends Component {
 
           <TextInput
           secureTextEntry = { false }
-          placeholder= 'user@gmail.com'
+          placeholder= 'Email'
           autoCorrect = { false }
           value={this.state.email}
           onChangeText={email => this.setState({ email })}
@@ -243,7 +280,7 @@ class PatientSignup extends Component {
 
           <TextInput
           secureTextEntry = { true }
-          placeholder= 'password'
+          placeholder= 'Password'
           autoCorrect = { false }
           value={this.state.password}
             onChangeText={password => this.setState({ password })}
@@ -259,6 +296,24 @@ class PatientSignup extends Component {
           style = { styles.inputStyle }
             ></TextInput>
 
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Age'
+        autoCorrect = { false }
+        value={this.state.age}
+        onChangeText={age => this.setState({ age })}
+        style = { styles.inputStyle }
+          ></TextInput>
+
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Gender'
+        autoCorrect = { false }
+        value={this.state.gender}
+        onChangeText={gender => this.setState({ gender })}
+        style = { styles.inputStyle }
+          ></TextInput>
+
           <TextInput
           secureTextEntry = { false }
           placeholder= 'Residential Address'
@@ -269,11 +324,15 @@ class PatientSignup extends Component {
           multiline = { true }
             ></TextInput>
 
-          <View style = { styles.uploadStyle }>
-            <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}}>
-              <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 16}}>{ this.state.uploadText}</Text>
+          <View>
+            <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}} style = { styles.uploadStyle }>
+              <Text style ={{color: "#59bfff", fontSize: 16}}>{ this.state.uploadText}</Text>
             </TouchableOpacity>
+            <Text style = {{alignSelf: 'center', marginBottom: hf*15, color: '#777', marginTop: '1%'}}>{ this.state.msg }</Text>
           </View>
+
+          {this.state.photo == '' ? null : <Image style = {styles.uploadImageStyle} source = {{uri: this.state.photo}} />}
+
             <View>
               { this.renderButton() }
             </View>
@@ -347,24 +406,36 @@ const styles = {
     uploadStyle: {
         alignSelf: 'center',
         marginTop: hf*15,
-        marginBottom: hf*15,
+        backgroundColor: '#fdfdfd',
+        borderRadius: 30,
+        padding: 10
     },
 
    spinnerStyle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hf*30
+        marginTop: hf*15,
+        marginBottom: hf*12
   },
 
    imageStyle: {
-      height: hf*150,
-      width: wf*150,
-      marginBottom: hf*20,
-      marginTop: hf*40,
-      alignSelf: 'center'
-  
-   }
+      height: hf*190,
+      width: wf*200,
+      marginTop: hf*2,
+      alignSelf: 'center',
+      resizeMode: 'contain'
+   },
+
+   uploadImageStyle: {
+    height: 125,
+    width: 125,
+    marginBottom: hf*15,
+    alignSelf: 'center',
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#59bfff'
+  }
   };
 
 export default PatientSignup;

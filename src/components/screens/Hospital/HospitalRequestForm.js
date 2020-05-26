@@ -31,7 +31,7 @@ class HospitalRequestForm extends Component {
     writeRequestData() {
       if(this.state.hname==''||this.state.duration==''||this.state.location==''||this.state.qualify==''||this.state.haddr=='')
       {
-        Toast.show("Kindly fill in all the fields.")
+        Toast.show("Kindly fill in all the fields")
       }
       else
       {
@@ -51,7 +51,7 @@ class HospitalRequestForm extends Component {
       firebase.database().ref().update(updateRequests)
       .then(()=>{
         console.log('Success');
-        Toast.show("Submission Successful!")  
+        Toast.show("Submission successful!")  
         this.setState({duration: '', location: '', qualify: '', haddr:'', hname:'' })
         }).catch((error)=>{
           console.log('error ' , error);
@@ -63,7 +63,7 @@ class HospitalRequestForm extends Component {
     {
       return(
         <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps='always'>
             <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
             />
@@ -216,11 +216,12 @@ const styles = {
   },
   
    imageStyle: {
-     height: hf*100,
-     width: wf*100,
+     height: hf*120,
+     width: wf*120,
      marginBottom: hf*30,
      marginTop: hf*30,
-     alignSelf: 'center'
+     alignSelf: 'center',
+     resizeMode: 'contain'
    },
 
    gradientStyle: {

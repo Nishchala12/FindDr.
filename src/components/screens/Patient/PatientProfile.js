@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import Toast from 'react-native-simple-toast';
+import { StackActions} from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import firebase from 'firebase'
 require('firebase/auth')
 
@@ -39,11 +41,20 @@ class PatientProfile extends Component
           }
           else if(response.error)
           {
-            Toast.show('Error while uploading. Try Again.')
+            Toast.show('Error while uploading, try again.')
           }
           else
           {
-              this.setState({newPhoto: response.uri})
+            ImageResizer.createResizedImage(response.uri, 500, 500, 'JPEG', 95 )
+            .then(resp => {
+                console.log('Image resized')
+                console.log(resp.size)
+                console.log(resp.uri)
+                this.setState({newPhoto: resp.uri})
+            }).catch(err => {
+               console.log(err,'Image not resized')
+            });
+              
           }  
   
         });
@@ -109,7 +120,11 @@ class PatientProfile extends Component
         {
             if(this.state.user.name==''||this.state.user.email==''||this.state.user.phone==''||this.state.user.raddr=='')
             {
-                Toast.show('Kindly fill in all the fields.')
+                Toast.show('Kindly fill in all the fields')
+            }
+            if(this.state.user.phone.length != 10)
+            {
+              Toast.show('Enter 10 - digit contact number')
             }
             else 
             {
@@ -131,14 +146,14 @@ class PatientProfile extends Component
                             raddr: this.state.user.raddr,
                             }).then(()=>{
                                     console.log('Success');
-                                    Toast.show("Profile Successfully Updated")
+                                    Toast.show("Profile successfully updated!")
                                 }).catch((error)=>{
-                                Toast.show("Update Error")
+                                Toast.show("Update error")
                                     console.log('error ' , error);
                                 }) 
                   }).catch((error)=>{
                     console.log(error)
-                    Toast.show('Sign Up not Successful')
+                    Toast.show('Sign Up not successful')
                   })
                 
                 }
@@ -151,9 +166,9 @@ class PatientProfile extends Component
                         raddr: this.state.user.raddr,
                         }).then(()=>{
                                 console.log('Success');
-                                Toast.show("Profile Successfully Updated")
+                                Toast.show("Profile successfully updated!")
                             }).catch((error)=>{
-                            Toast.show("Update Error")
+                            Toast.show("Update error")
                                 console.log('error ' , error);
                             }) 
                 }
@@ -174,21 +189,23 @@ class PatientProfile extends Component
     render() 
     {
         return(
-            <View style = {{ backgroundColor: '#fdfdfd', height: hf*800  }}>
+            <View style = {{ backgroundColor: '#fdfdfd' }}>
                 <View style = { styles.headerStyle}>
                     <TouchableOpacity onPress = {() =>{ this.editProfile()}} style = {styles.saveButtonStyle}>
                         <Text style ={{color: "#59bfff", fontSize: 14, alignSelf: 'center'}}>{ this.state.profileText}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style = { styles.logoutStyle } onPress = {() =>{ firebase.auth().signOut()
-                                                    this.props.navigation.navigate('Login')}}>
+                    <TouchableOpacity style = { styles.logoutStyle } onPress = {() =>{ 
+                      firebase.auth().signOut()
+                      this.props.navigation.dispatch(
+                        StackActions.replace('Login'))}}>
                     <Text style = {{fontSize: 16,  alignSelf: 'center', marginRight: wf*120, color: '#fdfdfd'}}>Logout</Text>
                     </TouchableOpacity>
             </View>
-            <KeyboardAwareScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 <TouchableOpacity disabled = {!this.state.editText} onPress = {() =>{ this.uploadPhoto()}}>
                     {this.state.newPhoto == '' ?
                         <Image source = {require('../../../Images/profile.png')}
-                        style = { [styles.imageStyle, {borderWidth: 0}] } tintColor ="#59bfff"
+                        style = { [styles.imageStyle, {borderWidth: this.state.editText ? 1 : 0}] } tintColor ="#59bfff"
                         />     :
                         <Image source = {{uri: this.state.newPhoto}}
                         style = { styles.imageStyle } 
@@ -215,15 +232,14 @@ class PatientProfile extends Component
         <Text style = {styles.textStyle}>Email:</Text>
        <TextInput
        secureTextEntry = { false }
-       placeholder= 'user@gmail.com'
+       placeholder= 'Email'
        placeholderTextColor = '#A9A9A9'
-       underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
        value={this.state.user.email}
        onChangeText={(e) => this.saveProfile('email', e)}
         autoCapitalize='none'
        style = { styles.inputStyle }
-       editable = {this.state.editText}
+       editable = {false}
         ></TextInput>
         </View>
     
@@ -257,7 +273,12 @@ class PatientProfile extends Component
        editable = {this.state.editText}
         ></TextInput>
         </View>
-      </KeyboardAwareScrollView>
+
+        <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*40, marginBottom: hf*20}}>
+            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
+            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+        </View>
+      </ScrollView>
       </View>
     
         );
@@ -353,12 +374,12 @@ const styles = {
     },
     
     imageStyle: {
-      height: hf*100,
-      width: wf*100,
+      height: 125,
+      width: 125,
       marginBottom: hf*30,
       marginTop: hf*30,
       alignSelf: 'center',
-      borderRadius: 500,
+      borderRadius: 100,
       borderWidth: 1,
       borderColor: '#59bfff'
    

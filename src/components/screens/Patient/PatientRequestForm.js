@@ -31,14 +31,14 @@ class PRequests extends Component {
     }
 
     importAddress () {
-        this.setState({raddr: this.state.user.raddr, name: this.state.user.name, email: this.state.user.email, phone: this.state.user.phone })
+        this.setState({raddr: this.state.user.raddr, name: this.state.user.name, email: this.state.user.email, phone: this.state.user.phone, age: this.state.user.age, gender: this.state.user.gender })
     }
 
     writeRequestData()
    {
         if(this.state.name==''||this.state.age==''||this.state.gender==''||this.state.phone==''||this.state.email==''||this.state.raddr==''||this.state.complaints=='')
         {
-        Toast.show("Kindly fill in all the fields.")
+        Toast.show("Kindly fill in all the fields")
         }
         else
         {
@@ -60,7 +60,7 @@ class PRequests extends Component {
         firebase.database().ref().update(updateRequests)
         .then(()=>{
             console.log('Success');
-            Toast.show("Submission Successful!")   
+            Toast.show("Submission successful!")   
             this.setState({name: '', age: '', email: '', gender: '', phone: '', raddr: '', complaints: ''})
             }).catch((error)=>{
                 console.log('error ' , error);
@@ -72,7 +72,7 @@ class PRequests extends Component {
     {
     return(
     <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps='always'>
             
             <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
@@ -93,7 +93,7 @@ class PRequests extends Component {
             ></TextInput>
         
             <TextInput
-            placeholder= 'user@gmail.com'
+            placeholder= 'Email'
             autoCorrect = { false }
             value={this.state.email}
             onChangeText={email => this.setState({ email })}
@@ -268,11 +268,12 @@ const styles = {
     },
   
    imageStyle: {
-        height: hf*100,
-        width: wf*100,
+        height: hf*120,
+        width: wf*120,
         marginBottom: hf*30,
         marginTop: hf*30,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        resizeMode: 'contain'
   
    }
   };

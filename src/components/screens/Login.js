@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, ActivityIndicator, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { StackActions} from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import firebase from 'firebase'
 require('firebase/auth')
@@ -64,7 +65,7 @@ class Login extends Component {
             .signInWithEmailAndPassword(email, password)
             .then(() => {this.onLoginSuccess()
                   })
-            .catch((error) => {Toast.show("Login Error")
+            .catch((error) => {Toast.show("Login error")
                   console.log(error) 
                   this.setState({loading: false})
                   })
@@ -73,14 +74,24 @@ class Login extends Component {
 
 
     onLoginSuccess() {
+
       firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (user) =>{
         this.setState({ user: user.val() })
       if(user.val() && user.val() != null && user.val().role==0)
-        this.props.navigation.navigate('PatientLoggedIn')
+      {
+        this.props.navigation.dispatch(
+          StackActions.replace('PatientLoggedIn'))
+      }
       else if(user.val() && user.val() != null && user.val().role==1)
-        this.props.navigation.navigate('DoctorLoggedIn')
+      {
+        this.props.navigation.dispatch(
+          StackActions.replace('DoctorLoggedIn'))
+      }
       else if(user.val() && user.val() != null && user.val().role==2)
-        this.props.navigation.navigate('HospitalLoggedIn')
+      {
+        this.props.navigation.dispatch(
+          StackActions.replace('HospitalLoggedIn'))
+      }
       })
       this.setState({email: '', password: '', loading: false})
     }
@@ -107,9 +118,9 @@ class Login extends Component {
         return(
           <View style = {{ alignItems: 'center', height: '100%', alignSelf: 'center'}}>
             <Image source = {require('../../Images/logo.png')}
-            style = { [styles.imageStyle, {marginTop: hf*150}] }
+            style = { [styles.imageStyle, {marginTop: hf*120}] }
             />
-            <ActivityIndicator size = { "large" } color = "#59bfff"/>
+            <ActivityIndicator size = { "large" } style = {{marginTop: hf*100}} color = "#59bfff"/>
           </View>
         );
       }
@@ -117,39 +128,45 @@ class Login extends Component {
       {
     return(
       <LinearGradient colors = {['#fff', '#ADD8E6' ]} style = {styles.gradientStyle}>
-    <Image source = {require('../../Images/logo.png')}
-    style = { styles.imageStyle }
-    />
+        <Image source = {require('../../Images/logo.png')}
+        style = { styles.imageStyle }
+        />
 
-   <TextInput
-   secureTextEntry = { false }
-   placeholder= 'user@gmail.com'
-   autoCorrect = { false }
-   value={this.state.email}
-   autoCapitalize='none'
-   onChangeText={email => this.setState({ email })}
-   style = { styles.inputStyle }
-   ></TextInput>
+        <TextInput
+        secureTextEntry = { false }
+        placeholder= 'Email'
+        autoCorrect = { false }
+        value={this.state.email}
+        autoCapitalize='none'
+        onChangeText={email => this.setState({ email })}
+        style = { styles.inputStyle }
+        ></TextInput>
 
-   <TextInput
-   secureTextEntry = { true }
-   placeholder= 'password'
-   autoCorrect = { false }
-   value={this.state.password}
-   onChangeText={password => this.setState({ password })}
-   style = { styles.inputStyle }
-   ></TextInput>
-      
-    <View>
-      {this.renderButton()}
-    </View>  
+        <TextInput
+        secureTextEntry = { true }
+        placeholder= 'Password'
+        autoCorrect = { false }
+        value={this.state.password}
+        onChangeText={password => this.setState({ password })}
+        style = { styles.inputStyle }
+        ></TextInput>
+            
+          <View>
+            {this.renderButton()}
+          </View>  
 
-    <View style = {styles.logoutStyle}>
-                <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Signup')}}>
-    <Text style ={{color: "#59bfff", fontWeight: "bold", fontSize: 15}}>New User? Get started here!</Text>
-                </TouchableOpacity>
-    </View>
-  </LinearGradient>
+          <View style = {{flexDirection: 'row', marginTop: hf*40, alignSelf:"center"}}>
+            <Text style = {{color: '#777', fontSize: 16}}>New User? </Text>
+            <TouchableOpacity onPress = {() =>{this.props.navigation.navigate('Signup')}}>
+              <Text style ={{color: "#1589ff", fontSize: 16}}>Get started here!</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*100}}>
+            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
+            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+          </View>
+      </LinearGradient>
 
     );
       }
@@ -218,7 +235,7 @@ const styles = {
      flex: 1,
      justifyContent: 'center',
      alignItems: 'center',
-     marginTop: hf*30
+     marginTop: hf*50
    },
   
    imageStyle: {
@@ -226,15 +243,11 @@ const styles = {
      width: wf*200,
      marginBottom: hf*50,
      marginTop: hf*70,
-     alignSelf: 'center'
+     alignSelf: 'center',
+     resizeMode: 'contain'
   
    },
 
-   logoutStyle: {
-    alignSelf: 'center', 
-    alignItems: 'center',
-    marginTop: hf*40
-  },
   };
 
 export default Login;

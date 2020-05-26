@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-simple-toast';
+import { StackActions} from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import firebase from 'firebase'
 require('firebase/auth')
 
@@ -28,8 +30,33 @@ class DoctorProfile extends Component
        })
     }
 
-    uploadPhoto = () => { 
+     compress(source_img_obj, quality, maxWidth, output_format){
+      var mime_type = "image/jpeg";
+      if(typeof output_format !== "undefined" && output_format=="png"){
+          mime_type = "image/png";
+      }
+      maxWidth = maxWidth || 1000;
+      var natW = source_img_obj.naturalWidth;
+      var natH = source_img_obj.naturalHeight;
+      var ratio = natH / natW;
+      if (natW > maxWidth) {
+          natW = maxWidth;
+          natH = ratio * maxWidth;
+      }
+  
+      var cvs = document.createElement('canvas');
+      cvs.width = natW;
+      cvs.height = natH;
+  
+      var ctx = cvs.getContext("2d").drawImage(source_img_obj, 0, 0, natW, natH);
+      var newImageData = cvs.toDataURL(mime_type, quality/100);
+      var result_image_obj = new Image();
+      result_image_obj.src = newImageData;
+      return result_image_obj;
+  }
 
+    uploadPhoto = () => { 
+          
           const options ={ noData: true }
           ImagePicker.launchImageLibrary(options, response => {
             console.log('response', response);
@@ -39,11 +66,20 @@ class DoctorProfile extends Component
             }
             else if(response.error)
             {
-              Toast.show('Error while uploading. Try Again.')
+              Toast.show('Error while uploading, try again.')
             }
             else
-            {
-                this.setState({newPhoto: response.uri})
+            { 
+              ImageResizer.createResizedImage(response.uri, 500, 500, 'JPEG', 95 )
+              .then(resp => {
+                  console.log('Image resized')
+                  console.log(resp.size)
+                  console.log(resp.uri)
+                  this.setState({newPhoto: resp.uri})
+              }).catch(err => {
+               console.log(err,'Image not resized')
+            });
+               
             }  
     
           });
@@ -108,7 +144,11 @@ class DoctorProfile extends Component
         {
             if(this.state.user.name==''||this.state.user.email==''||this.state.user.DOB==''||this.state.user.age==''||this.state.user.phone==''||this.state.user.kmc==''||this.state.user.college==''||this.state.user.raddr==''||this.state.user.waddr==''||this.state.user.qualifications=='')
             {
-                Toast.show('Kindly fill in all the fields.')
+              Toast.show('Kindly fill in all the fields')
+            }
+            if(this.state.user.phone.length != 10)
+            {
+              Toast.show('Enter 10 - digit contact number')
             }
             else 
             {
@@ -136,14 +176,14 @@ class DoctorProfile extends Component
                             qualifications: this.state.user.qualifications
                             }).then(()=>{
                                     console.log('Success');
-                                    Toast.show("Profile Successfully Updated")
+                                    Toast.show("Profile successfully updated!")
                                 }).catch((error)=>{
-                                Toast.show("Update Error")
+                                Toast.show("Update error")
                                     console.log('error ' , error);
                                 }) 
                   }).catch((error)=>{
                     console.log(error)
-                    Toast.show('Sign Up not Successful')
+                    Toast.show('Sign Up not successful')
                   })
                 
                 }
@@ -162,9 +202,9 @@ class DoctorProfile extends Component
                         qualifications: this.state.user.qualifications
                         }).then(()=>{
                                 console.log('Success');
-                                Toast.show("Profile Successfully Updated")
+                                Toast.show("Profile successfully updated!")
                             }).catch((error)=>{
-                            Toast.show("Update Error")
+                            Toast.show("Update error")
                                 console.log('error ' , error);
                             }) 
                 }
@@ -192,17 +232,19 @@ class DoctorProfile extends Component
                         <TouchableOpacity onPress = {() =>{ this.editProfile()}} style = {styles.saveButtonStyle}>
                             <Text style ={{color: "#59bfff", fontSize: 14, alignSelf: 'center'}}>{ this.state.profileText}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style = { styles.logoutStyle } onPress = {() =>{ firebase.auth().signOut()
-                                                        this.props.navigation.navigate('Login')}}>
+                        <TouchableOpacity style = { styles.logoutStyle } onPress = {() =>{ 
+                          firebase.auth().signOut()
+                          this.props.navigation.dispatch(
+                            StackActions.replace('Login'))}}>
                             <Text style = {{fontSize: 16, alignSelf: 'center', marginRight: wf*120, color: '#fdfdfd'}}>Logout</Text>
                         </TouchableOpacity>
                 </View>
                 <View style = {{ backgroundColor: '#fdfdfd', height: '93%'}}>
-                    <ScrollView>
+                    <ScrollView keyboardShouldPersistTaps='always'>
                         <TouchableOpacity disabled = {!this.state.editText} onPress = {() =>{ this.uploadPhoto()}}>
                             { this.state.newPhoto == '' ?
                                 <Image source = {require('../../../Images/profile.png')}
-                                style = { [styles.imageStyle, {borderWidth: 0}] } tintColor ="#59bfff"
+                                style = { [styles.imageStyle, {borderWidth: this.state.editText ? 1 : 0}] } tintColor ="#59bfff"
                                 />     :
                                 <Image source = {{uri: this.state.newPhoto}}
                                 style = { styles.imageStyle } 
@@ -228,15 +270,14 @@ class DoctorProfile extends Component
         <Text style = {styles.textStyle}>Email:</Text>
         <TextInput
         secureTextEntry = { false }
-        placeholder= 'user@gmail.com'
+        placeholder= 'Email'
         placeholderTextColor = '#A9A9A9'
         autoCorrect = { false }
-        underlineColorAndroid = { this.state.transparency }
         value={this.state.user.email}
         onChangeText={(e) => {this.saveProfile('email', e)}}
         autoCapitalize='none'
         style = { styles.inputStyle }
-        editable = {this.state.editText}
+        editable = {false}
         ></TextInput>
         </View>
     
@@ -289,14 +330,13 @@ class DoctorProfile extends Component
         <Text style = {styles.textStyle}>KMC Registration Number:</Text>
        <TextInput
        secureTextEntry = { false }
-       underlineColorAndroid = { this.state.transparency }
        placeholder= 'KMC Registration No.'
        placeholderTextColor = '#A9A9A9'
        autoCorrect = { false }
        value={this.state.user.kmc}
        onChangeText={(k) => {this.saveProfile('kmc', k)}}
        style = { styles.inputStyle }
-       editable = {this.state.editText}
+       editable = {false}
         ></TextInput>
         </View>
 
@@ -348,10 +388,10 @@ class DoctorProfile extends Component
         </View>
     
         <View style = {{marginBottom: hf*25, marginLeft: wf*60, borderLeftColor: '#59bfff', borderLeftWidth: 1.5}}>
-        <Text style = {styles.textStyle}>Additional Qualifications:</Text>
+        <Text style = {styles.textStyle}>Qualifications:</Text>
        <TextInput
        secureTextEntry = { false }
-       placeholder= 'Additional Qualifications'
+       placeholder= 'Qualifications'
        placeholderTextColor = '#A9A9A9'
        underlineColorAndroid = { this.state.transparency }
        autoCorrect = { false }
@@ -360,7 +400,12 @@ class DoctorProfile extends Component
        style = { styles.inputStyle }
        editable = {this.state.editText}
         ></TextInput>
-        </View>    
+        </View>   
+        
+        <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*40, marginBottom: hf*30}}>
+            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
+            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+        </View>
       </ScrollView>
     </View>
 </View>
@@ -457,12 +502,12 @@ const styles = {
     },
     
     imageStyle: {
-      height: hf*100,
-      width: wf*100,
+      height: 125,
+      width: 125,
       marginBottom: hf*30,
       marginTop: hf*30,
       alignSelf: 'center',
-      borderRadius: 500,
+      borderRadius: 100,
       borderWidth: 1,
       borderColor: '#59bfff'
     }

@@ -22,38 +22,73 @@ class HospitalRequestCard extends Component {
             <View style = { [styles.cardBodyStyle, { width: this.props.tickAction||this.props.crossAction ? '78%' : '95%'}] }>
 
                     <View style = {{flexDirection: 'row'}}> 
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff', alignSelf:'center' }}>Contact No:</Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5 }}>{ this.props.data.phone }</Text>
+                        <View style = {{marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%'}}>
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Contact No:</Text>
+                        </View>
+                        <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%' }}>
+                            <Text style = {{ fontSize: 13 }}>{ this.props.data.phone }</Text>
+                        </View>
                     </View>
 
                     <View style = {{flexDirection: 'row'}}> 
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff', alignSelf:'center' }}>Email:</Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5 }}>{ this.props.data.email }</Text>
+                        <View style = {{marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%'}}>
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Email:</Text>
+                        </View>
+                        <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%' }}>
+                            <Text style = {{ fontSize: 13 }}>{ this.props.data.email }</Text>
+                        </View>
                     </View>
 
                     <View style = {{flexDirection: 'row'}}>
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff' }}>Duty Location:</Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5 }}>{ this.props.data.location }</Text>
+                        <View  style = {{ marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%' }}>
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Duty Location:</Text>
+                        </View>
+                        <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%' }}>
+                            <Text style = {{ fontSize: 13 }}>{ this.props.data.location }</Text>
+                        </View>
                     </View>
 
                     <View style = {{flexDirection: 'row'}}>
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff' }}>Duty Duration:</Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5 }}>{ this.props.data.duration }</Text>
+                        <View style = {{ marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%' }}>   
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Duty Duration:</Text>
+                        </View>
+                        <View style = {{ marginRight: '3%', marginLeft: '1%', marginTop: hf*5, width: '56%' }}>
+                            <Text style = {{ fontSize: 13 }}>{ this.props.data.duration }</Text>
+                        </View>
                     </View>
 
                     <View style = {{flexDirection: 'row'}}>
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff' }}>Qualifications:</Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5 }}>{ this.props.data.qualifications }</Text>
+                        <View style = {{ marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%' }} >
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Qualifications:</Text>
+                        </View>
+                        <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%'}}>
+                            <Text style = {{ fontSize: 13 }}>{ this.props.data.qualifications }</Text>
+                        </View>
                     </View>
+
+                    { this.props.data.docInfo ?
+                            <View style = {{flexDirection: 'row'}}>
+                                <View style = {{ marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%' }} >
+                                    <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Doctor Details:</Text>
+                                </View>
+                                <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%'}}>
+                                    <Text style = {{ fontSize: 13 }}>{ this.props.data.docInfo }</Text>
+                                </View>
+                            </View>
+                        : null
+                    }
+
                     <View style = {{flexDirection: 'row'}}>
-                        <Text style = {{ fontWeight: 'bold', marginLeft: wf*10, marginTop: hf*5, color: '#59bfff', marginBottom: hf*5 }}></Text>
-                        <Text style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10, marginTop: hf*5, color: '#a9a9a9' }}>{ this.getDate() }</Text>
+                        <View style = {{ marginLeft: wf*10,  marginBottom: hf*5  }}>
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>{'\n'}</Text>
+                        </View>
+                        <View style = {{ position: 'absolute', right: wf*10, marginLeft: wf*10,  marginBottom: hf*5  }}>
+                            <Text style = {{ fontSize: 13,  color: '#a9a9a9' }}>{ '\n'+ this.getDate() }</Text>
+                        </View>
                     </View>
             </View>
             <View style = { [styles.cardButtonStyle,
-                        { backgroundColor: this.props.tickAction ? '#fdfdfd' : null,
-                          elevation: this.props.tickAction ? 5 : null,
-                          height: this.props.tickAction ? null : 0 }
+                            { height: this.props.tickAction||this.props.crossAction ? null : 0 }
                             ]}>
                 <TouchableOpacity style = {{ marginLeft: wf*15, marginRight: wf*15 }} onPress = { () => this.props.tickAction() }>
                     { this.props.tickAction ?
@@ -90,10 +125,10 @@ class HospitalRequestCard extends Component {
                         }
                         </View>
                         <View style = {{width: wf*120}}>
-                             <Text style = {{ paddingRight: 5}}><Text style = {{ fontWeight: 'bold', marginRight: 10, color: '#59bfff', }}>Doctor Name: {'\n' }</Text>{this.props.data.doctorname}</Text>
+                             <Text style = {{ fontSize: 13,  paddingRight: 5}}><Text style = {{ fontSize: 13,  fontWeight: 'bold', marginRight: 10, color: '#59bfff', }}>Doctor Name: {'\n' }</Text>{this.props.data.doctorname}</Text>
                         </View>
                         <View style = {{width: wf*170}}>
-                            <Text style = {{paddingBottom: 5, paddingRight: 10 }}><Text style = {{ fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' }</Text>{this.props.data.hospitalname }{'\n'}{this.props.data.hospitaladdress}</Text>
+                            <Text style = {{ fontSize: 13,  paddingBottom: 5, paddingRight: 10, }}><Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Hospital Address: {'\n' }</Text>{this.props.data.hospitalname }{'\n'}{this.props.data.hospitaladdress}</Text>
                         </View>
                     </TouchableOpacity>
                     <View style = {{width: wf*340, marginBottom: hf*8, alignSelf: 'center', height: hf*10, elevation: 5, backgroundColor: this.props.colors, borderRadius: 20}} />
@@ -153,12 +188,14 @@ const styles = {
 
     buttonAcceptImageStyle: {
         height: hf*30,
-        width: wf*30
+        width: wf*30,
+        resizeMode: 'contain'
     },
 
     buttonDeclineImageStyle: {
-        height: hf*28,
-        width: wf*28
+        height: hf*26,
+        width: wf*26,
+         resizeMode: 'contain'
     }
 }
 

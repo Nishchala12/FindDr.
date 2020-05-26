@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import PatientRequestCard from '../../PatientRequestCard';
 import firebase from 'firebase'
 require('firebase/auth')
+
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
 
 class DocPatientRequest extends Component {
     state = {
         requests: {},
         expanded: {},
         colors: {},
+        user: {}
 
     }
     
     componentDidMount() 
     {
-       firebase.database().ref('requests/patient').on('value', (r) => {
-            if( r.val() && r.val() != null)
-            {
-                this.setState({ requests: r.val() }, () => {
+        firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (u) => {
+            firebase.database().ref('requests/patient').on('value', (r) => {
+                if( r.val() && r.val() != null)
+                {
+                    this.setState({ requests: r.val(), user: u.val() }, () => {
                     let reqIDs = Object.keys( this.state.requests );
                     let temp = {};
                     let col = {};
@@ -27,8 +34,9 @@ class DocPatientRequest extends Component {
                         col[reqIDs[i]] = '#ccc'
                     }
                     this.setState({ expanded: temp, colors: col })
-                })
-            }    
+                    })
+                }    
+            })
         })
     }
 
@@ -55,17 +63,23 @@ class DocPatientRequest extends Component {
             }
 
         }
+        if(renderArray.length==0)
+        {
+        return(
+            <View style = {{alignSelf: 'center',marginTop: hf*300}}>
+                <Text style = {{fontSize: 16, color: '#777', alignSelf: 'center'}}>You have no new requests!</Text>
+            </View>);
+        }
             return renderArray;
     }
     
     tickAction(reqID) 
     {
-        var user = firebase.auth().currentUser
-        var userId = user.uid
-
+        var user = this.state.user
         var updateRequests = {};
         updateRequests['requests/patient/'+reqID+'/status'] = 1;
-        updateRequests['users/'+userId+'/patientrequests/'+reqID] = '';
+        updateRequests['requests/patient/'+reqID+'/docInfo'] = user.name+'\n'+user.phone+'\n'+user.qualifications;
+        updateRequests['users/'+firebase.auth().currentUser.uid+'/patientrequests/'+reqID] = '';
         firebase.database().ref().update(updateRequests)
         .then(()=>{
             console.log('Success')

@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text, Dimensions } from 'react-native';
 import PatientRequestCard from '../../PatientRequestCard';
 import firebase from 'firebase'
 require('firebase/auth')
+
+let phoneHeight = Dimensions.get('window').height;
+let phoneWidth = Dimensions.get('window').width;
+let hf = phoneHeight/738.1818181818181;
+let wf = phoneWidth/392.72727272727275;
 
 class DocPatientAccepted extends Component {
     state = {
@@ -14,8 +19,9 @@ class DocPatientAccepted extends Component {
     
      componentDidMount() 
     {
-       firebase.database().ref('requests/patient').on('value', (r) => {
-           firebase.database().ref('users/'+firebase.auth().currentUser.uid+'/patientrequests').on('value', (mr) => {
+        let authUID = firebase.auth().currentUser.uid
+        firebase.database().ref('requests/patient').on('value', (r) => {
+           firebase.database().ref('users/'+authUID+'/patientrequests').on('value', (mr) => {
                 if( r.val() && r.val() != null )
                 {
                     if( mr.val() && mr.val() != null)
@@ -66,18 +72,23 @@ class DocPatientAccepted extends Component {
             {
                 renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
                     toggle = { this.toggle.bind(this, reqIDs[i]) }  colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }
-                    crossAction = { this.crossAction.bind(this, reqIDs[i]) } />)
+                    crossAction = { this.state.requests[reqIDs[i]].status==1 ? this.crossAction.bind(this, reqIDs[i]) : undefined } />)
             }
+        }
+        if(renderArray.length==0)
+        {
+        return(
+            <View style = {{alignSelf: 'center',marginTop: hf*300}}>
+                <Text style = {{fontSize: 16, color: '#777', alignSelf: 'center'}}>You have no new requests!</Text>
+            </View>);
         }
         return renderArray;
     }
 
     crossAction(id) {
-        let t = this.state.colors
-        t[id]='#ffcccb'
-        this.setState({ colors: t })
         firebase.database().ref('requests/patient/'+id).update({
-            status: 0
+            status: 0,
+            docInfo: {}
         })
         .then(()=>{
             console.log('Success')
