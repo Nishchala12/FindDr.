@@ -1,1 +1,1 @@
-<img src="Documentation/FindDr.png" height=700 />
+<img src="Documentation/FindDr.png" height=1000 />
