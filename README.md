@@ -120,7 +120,6 @@ This document along with the source code of the application is being submitted a
     }
   }
 }
-
 ```
 
 ## Files
