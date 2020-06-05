@@ -1,5 +1,6 @@
 # FindDr.
-This document along with the source code of the application is being submitted as a Proof of Concept.
+- The project is a Proof of Concept for the idea which collaborates/connects the Patient, Doctor and hospital fields.
+- This document, the aplication apk, and the source code of the application is being submitted as discussed.
 ## Tech Stack
 - <b>React Native:</b> React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.
 - <b>Firebase Authentication:</b> Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
@@ -211,5 +212,5 @@ This document along with the source code of the application is being submitted a
 
 ### Note:
 - After official handing over of the application and the code associated with it, a new firebase project needs to be created with official credentials and the project details must be replaced in the `firebase.initializeApp()` method.
--  This document is being submitted in return for ₹15,000/- and other added incentives post the app launch.
+-  This document is being submitted on account of ₹15,000/- and other added incentives post the delivery of the app.
 
