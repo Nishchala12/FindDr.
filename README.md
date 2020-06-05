@@ -211,7 +211,6 @@ This document along with the source code of the application is being submitted a
 <br />
 <br />
 ### Note
-
 - After official handing over of the application and the code associated with it, a new firebase project needs to be created with official credentials and the project details must be replaced in the `firebase.initializeApp()` method.
 -  This document is being submitted in return for ₹15,000/- and other added incentives post the app launch.
 
