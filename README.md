@@ -1,7 +1,7 @@
 # FindDr.
 This document along with the source code of the application is being submitted as a Proof of Concept.
 ## Tech Stack
-- React Native: React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.
+- <b>React Native:</b> React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.
 - Firebase Authentication: Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
 - Firebase Realtime Database: The Firebase Realtime Database is a cloud-hosted database. Data is stored as JSON and synchronized in realtime to every connected client.
 - Firebase Storage: FirebaseStorage is a service that supports uploading and downloading large objects to Google Cloud Storage. 
