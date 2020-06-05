@@ -3,6 +3,7 @@
 - This document, the aplication apk, and the source code of the application is being submitted as discussed.
 ## Tech Stack
 <img src="Documentation/ReactFirebase.png" height=200 />
+
 - <b>React Native:</b> React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.
 - <b>Firebase Authentication:</b> Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
 - <b>Firebase Realtime Database:</b> The Firebase Realtime Database is a cloud-hosted database. Data is stored as JSON and synchronized in realtime to every connected client.
@@ -215,4 +216,4 @@
 
 ### Note:
 - After official handing over of the application and the code associated with it, the config needs to be changed.
--  This document is being submitted on account of ₹15,000/- and other added incentives post the delivery of the app.
+- This document is being submitted on account of ₹15,000/- and other added incentives after the delivery.
