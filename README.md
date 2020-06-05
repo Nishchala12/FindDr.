@@ -1,5 +1,5 @@
 # FindDr.
-- The project is a Proof of Concept for the idea which collaborates/connects the Patient, Doctor and hospital fields.
+- The project is a Proof of Concept for the idea which collaborates/connects the Patient, Doctor and Hospital fields.
 - This document, the aplication apk, and the source code of the application is being submitted as discussed.
 ## Tech Stack
 - <b>React Native:</b> React Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.
