@@ -130,6 +130,7 @@
 ## Files
 ### Colour Scheme
 <img src="Documentation/Colours.png" height=200 />
+
 ### /App.js
 - Initialize the app with Firebase credentials.
 - Initialize Navigate Router for enabling app navigation.  
