@@ -67,7 +67,7 @@ class HospitalRequestForm extends Component {
             <Image source = {require('../../../Images/requestform.png')}
             style = { styles.imageStyle } tintColor ="#59bfff"
             />
-            <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*20}}>Enter Doctor's Details</Text>
+            <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff', marginBottom: hf*20}}>Enter Doctor's/Healthcare Assistant's Details</Text>
 
               <TextInput
               placeholder= 'Hospital Name'

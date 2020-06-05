@@ -187,7 +187,7 @@ class HospitalProfile extends Component
     render() 
     {
         return(
-            <View style = {{ backgroundColor: '#fdfdfd' }}>
+            <View style = {{ backgroundColor: '#fdfdfd', height: '100%' }}>
                 <View style = { styles.headerStyle}>
                     <TouchableOpacity onPress = {() =>{ this.editProfile()}} style = {styles.saveButtonStyle}>
                         <Text style ={{color: "#59bfff", fontSize: 14, alignSelf: 'center'}}>{ this.state.profileText}</Text>
@@ -258,8 +258,8 @@ class HospitalProfile extends Component
             </View>
 
           <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*150, marginBottom: hf*20}}>
-            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
-            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+            <Text style = {{color: '#777'}}>Helpline Contact:</Text>
+            <Text style = {{color: '#777'}}>7411232380 | drdilip.stays@gmail.com</Text>
           </View>
           </ScrollView>
         </View>

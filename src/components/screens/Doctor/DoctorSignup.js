@@ -29,24 +29,33 @@ class DoctorSignup extends Component {
         qualify: '',
         uploadText: 'Upload Profile Photo',
         photo: '',
-        msg: '(Optional)'
+        msg: '(Optional)',
+        leftPill: true
     } 
 
 
     handleSignUp = () => {
-      if(this.state.name == ''||this.state.email == ''||this.state.password == ''||this.state.kmc == ''||this.state.dob == ''||this.state.age == ''||this.state.phone == ''||this.state.college == ''||this.state.raddr == ''||this.state.waddr == ''||this.state.qualify == '')
-          Toast.show("Kindly fill in all the fields")
-      else {
-        if(this.state.password.length < 6)
-          {
-            Toast.show('Password should be atleast 6 characters')
-            return;
-          }
-        if(this.state.phone.length != 10)
-        {
-            Toast.show('Enter 10 - digit contact number')
-            return;
-        }
+      if(this.state.name == ''||this.state.email == ''||this.state.password == ''||this.state.dob == ''||this.state.age == ''||this.state.phone == ''||this.state.college == ''||this.state.raddr == ''||this.state.waddr == ''||this.state.qualify == '')
+      {
+        Toast.show("Kindly fill in all the fields")
+        return;
+      }
+      if(this.state.leftPill==true && this.state.kmc=='')
+      {
+        Toast.show("Kindly fill in all the fields")
+        return;        
+      }
+      if(this.state.password.length < 6)
+      {
+        Toast.show('Password should be atleast 6 characters')
+        return;
+      }      
+      if(this.state.phone.length != 10)
+      {
+          Toast.show('Enter 10 - digit contact number')
+          return;
+      }
+
         const { email, password } = this.state
 
         this.setState({ loading: true })
@@ -63,8 +72,6 @@ class DoctorSignup extends Component {
                             Toast.show('Sign Up error')
                             console.log(error)
                         })
-
-                      }
      }
 
 
@@ -277,13 +284,26 @@ class DoctorSignup extends Component {
         style = { styles.imageStyle } tintColor ="#59bfff"
         />
         <Text style = {{alignSelf:'center', fontSize: 16, color: '#59bfff'}}>Sign Up as a</Text>
-        <Text style = {{alignSelf:'center', fontSize: 25, fontWeight: 'bold', color: '#59bfff', marginBottom: hf*30}}>MEDICAL PROFESSIONAL</Text>
-
+    <Text style = {{alignSelf:'center', fontSize: this.state.leftPill ? 25 : 22, fontWeight: 'bold', color: '#59bfff', marginBottom: this.state.leftPill ? hf*10 : hf*13}}>{this.state.leftPill ? 'DOCTOR' : 'HEALTHCARE  ASSISTANT'}</Text>
+ 
+        <View style = {{flexDirection: 'row', alignSelf: 'center', alignItems: 'center', justifyContent: 'center', marginBottom: hf*10, marginTop: hf*18}}>
+          <TouchableOpacity style = {[styles.leftPillStyle, {backgroundColor: this.state.leftPill ? '#59bfff' : '#fdfdfd'}]}
+          onPress = {() => this.setState({ leftPill: true, name: '',email: '', password: '', kmc: '', dob: '', 
+          age: '', phone: '', waddr: '', raddr: '' , college: '', qualify: ''})}>
+            <Text style = {{padding: 13.3, alignSelf: 'center', color: this.state.leftPill ? '#fdfdfd': '#59bfff'}}>Doctor</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style = {[styles.rightPillStyle, {backgroundColor: !this.state.leftPill ? '#59bfff' : '#fdfdfd'} ]} 
+          onPress = {() => this.setState({ leftPill: false, name: '',email: '', password: '', kmc: '', dob: '', 
+          age: '', phone: '', waddr: '', raddr: '' , college: '', qualify: ''})}>
+            <Text style = {{padding: 5, alignSelf: 'center', color: !this.state.leftPill ? '#fdfdfd': '#59bfff'}}>Healthcare{'\n'} Assistant</Text>
+          </TouchableOpacity>
+        </View>
         <TextInput
         secureTextEntry = { false }
         placeholder= 'Full Name'
         autoCorrect = { false }
         value={this.state.name}
+        onFocus = {() =>{ this.state.leftPill ? this.setState({name: 'Dr. '}) : this.setState({name: ''}) }}
         onChangeText={name => this.setState({ name })}
         style = { styles.inputStyle }
         ></TextInput>
@@ -333,15 +353,18 @@ class DoctorSignup extends Component {
         onChangeText={phone => this.setState({ phone })}
         style = { styles.inputStyle }
           ></TextInput>
-
-        <TextInput
-        secureTextEntry = { false }
-        placeholder= 'KMC Registration No.'
-        autoCorrect = { false }
-        value={this.state.kmc}
-        onChangeText={kmc => this.setState({ kmc })}
-        style = { styles.inputStyle }
-          ></TextInput>
+        
+        { this.state.leftPill ?
+          <TextInput
+          secureTextEntry = { false }
+          placeholder= 'KMC Registration No.'
+          autoCorrect = { false }
+          value={this.state.kmc}
+          onChangeText={kmc => this.setState({ kmc })}
+          style = {styles.inputStyle}
+            ></TextInput>
+          : null
+        }
 
         <TextInput
         secureTextEntry = { false }
@@ -385,7 +408,7 @@ class DoctorSignup extends Component {
             <TouchableOpacity onPress = {() =>{ this.uploadPhoto()}} style = { styles.uploadStyle }>
               <Text style ={{color: "#59bfff", fontSize: 16}}>{ this.state.uploadText}</Text>
             </TouchableOpacity>
-            <Text style = {{alignSelf: 'center', marginBottom: hf*15,color: '#777', marginTop: '1%'}}>{ this.state.msg}</Text>
+            <Text style = {{alignSelf: 'center', marginBottom: hf*15,color: '#777', marginTop: '1%'}}>{this.state.msg}</Text>
           </View>
 
           {this.state.photo == '' ? null : <Image style = {styles.uploadImageStyle} source = {{uri: this.state.photo}} />}
@@ -457,6 +480,30 @@ const styles = {
         paddingBottom: 10,
         marginTop: hf*10,
         marginBottom: hf*20
+    },
+
+    rightPillStyle: {
+        borderColor: '#59bfff',
+        backgroundColor: '#fdfdfd',
+        borderWidth: 1,
+        borderBottomRightRadius: 25,
+        borderTopRightRadius: 25,
+        width: wf*148,
+        marginLeft: wf*1,
+        justifyContent: 'center',
+
+    },
+
+    leftPillStyle: {
+      borderColor: '#59bfff',
+      backgroundColor: '#fdfdfd',
+      borderWidth: 1,
+      borderBottomLeftRadius: 25,
+      borderTopLeftRadius: 25,
+      width: wf*148,
+      marginRight: wf*1,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
   
     textStyle: {

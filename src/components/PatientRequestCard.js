@@ -69,7 +69,7 @@ class PatientRequestCard extends Component {
                             { this.props.data.docInfo ?
                                     <View style = {{flexDirection: 'row'}}>
                                         <View style = {{ marginLeft: '3%', marginRight: '1%', marginTop: hf*5, width: '36%' }} >
-                                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>Doctor Details:</Text>
+                            <Text style = {{ fontSize: 13,  fontWeight: 'bold', color: '#59bfff' }}>{this.props.data.kmc != '' ? 'Doctor Details:' : 'Healthcare Assistant\nDetails:'}</Text>
                                         </View>
                                         <View style = {{ marginLeft: '1%', marginRight: '3%', marginTop: hf*5, width: '56%'}}>
                                             <Text style = {{ fontSize: 13 }}>{ this.props.data.docInfo }</Text>

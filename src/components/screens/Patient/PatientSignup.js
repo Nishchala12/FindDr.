@@ -31,19 +31,22 @@ class PatientSignup extends Component {
 
     handleSignUp = () => {
       if(this.state.name == ''||this.state.phone == ''||this.state.email == ''||this.state.password == ''||this.state.raddr == ''||this.state.age == ''||this.state.gender == '')
-          Toast.show("Kindly fill in all the fields")
-      else
       {
-        if(this.state.password.length < 6)
-          {
-            Toast.show('Password should be atleast 6 characters')
-            return;
-          }
-        if(this.state.phone.length != 10)
-        {
-            Toast.show('Enter 10 - digit contact number')
-            return;
-        }
+        Toast.show("Kindly fill in all the fields")
+        return;
+      }
+      if(this.state.password.length < 6)
+      {
+        Toast.show('Password should be atleast 6 characters')
+        return;
+      }
+      if(this.state.phone.length != 10)
+      {
+          Toast.show('Enter 10 - digit contact number')
+          return;
+      }
+      
+        
         const { email, password } = this.state
 
         this.setState({ loading: true })
@@ -58,8 +61,6 @@ class PatientSignup extends Component {
                             Toast.show('Sign Up error')
                             console.log(error)
                         })
-                      }
-
     }
 
     uploadPhoto = () => { 

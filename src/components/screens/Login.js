@@ -40,8 +40,7 @@ class Login extends Component {
           if(user)
           {
             this.setState({ loggedin: true });
-            this.onLoginSuccess()
-            
+            this.onLoginSuccess()  
           }
           else
           {
@@ -75,8 +74,7 @@ class Login extends Component {
 
     onLoginSuccess() {
 
-      firebase.database().ref('users/'+firebase.auth().currentUser.uid).on('value', (user) =>{
-        this.setState({ user: user.val() })
+      firebase.database().ref('users/'+firebase.auth().currentUser.uid).once('value', (user) =>{
       if(user.val() && user.val() != null && user.val().role==0)
       {
         this.props.navigation.dispatch(
@@ -163,8 +161,8 @@ class Login extends Component {
           </View>
           
           <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*100}}>
-            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
-            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+            <Text style = {{color: '#777'}}> Helpline Contact:</Text>
+            <Text style = {{color: '#777'}}>7411232380 | drdilip.stays@gmail.com</Text>
           </View>
       </LinearGradient>
 

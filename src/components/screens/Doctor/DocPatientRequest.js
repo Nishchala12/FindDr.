@@ -79,6 +79,7 @@ class DocPatientRequest extends Component {
         var updateRequests = {};
         updateRequests['requests/patient/'+reqID+'/status'] = 1;
         updateRequests['requests/patient/'+reqID+'/docInfo'] = user.name+'\n'+user.phone+'\n'+user.qualifications;
+        updateRequests['requests/patient/'+reqID+'/kmc'] = user.kmc;
         updateRequests['users/'+firebase.auth().currentUser.uid+'/patientrequests/'+reqID] = '';
         firebase.database().ref().update(updateRequests)
         .then(()=>{

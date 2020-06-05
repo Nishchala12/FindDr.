@@ -29,18 +29,20 @@ class HospitalSignup extends Component {
 
     handleSignUp = () => {
       if(this.state.dname == ''||this.state.phone == ''||this.state.email == ''||this.state.password == '')
-          Toast.show("Kindly fill in all the fields")
-      else {
-        if(this.state.password.length < 6)
-          {
-            Toast.show('Password should be atleast 6 characters')
-            return;
-          }
-        if(this.state.phone.length != 10)
-        {
-            Toast.show('Enter 10 - digit contact number')
-            return;
-        }
+      {
+        Toast.show("Kindly fill in all the fields")
+        return;
+      }
+      if(this.state.password.length < 6)
+      {
+        Toast.show('Password should be atleast 6 characters')
+        return;
+      }
+      if(this.state.phone.length != 10)
+      {
+        Toast.show('Enter 10 - digit contact number')
+        return;
+      }
         const { email, password } = this.state
 
         this.setState({ loading: true })
@@ -55,8 +57,6 @@ class HospitalSignup extends Component {
                             Toast.show('Sign Up error')
                             console.log(error)
                         })
-
-                      }
       }
 
       uploadPhoto = () => { 
@@ -259,6 +259,7 @@ class HospitalSignup extends Component {
         placeholder= 'Doctor - Full Name'
         autoCorrect = { false }
         value={this.state.dname}
+        onFocus = {() => this.setState({dname: 'Dr. '})}
         onChangeText={dname => this.setState({ dname })}
         style = { styles.inputStyle }
           ></TextInput>

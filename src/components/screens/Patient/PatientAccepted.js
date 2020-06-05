@@ -90,7 +90,7 @@ class PatientAccepted extends Component {
 
     tickAction(id) {
         let t = this.state.colors
-        t[id]='#d0c0f0'
+        t[id]='#d0f0c0'
         this.setState({ colors: t })
         firebase.database().ref('requests/patient/'+id).update({
             status: 2

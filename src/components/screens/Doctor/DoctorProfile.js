@@ -325,7 +325,7 @@ class DoctorProfile extends Component
        editable = {this.state.editText}
         ></TextInput>
         </View>
-    
+      { !this.state.user.kmc == '' ?
         <View style = {{marginBottom: hf*25, marginLeft: wf*60, borderLeftColor: '#59bfff', borderLeftWidth: 1.5}}>
         <Text style = {styles.textStyle}>KMC Registration Number:</Text>
        <TextInput
@@ -339,6 +339,8 @@ class DoctorProfile extends Component
        editable = {false}
         ></TextInput>
         </View>
+      : null
+      }
 
         <View style = {{marginBottom: hf*25, marginLeft: wf*60, borderLeftColor: '#59bfff', borderLeftWidth: 1.5}}>
         <Text style = {styles.textStyle}>Graduated Medical College:</Text>
@@ -403,8 +405,8 @@ class DoctorProfile extends Component
         </View>   
         
         <View style ={{alignSelf: 'center', alignItems: 'center', marginTop: hf*40, marginBottom: hf*30}}>
-            <Text style = {{color: '#777'}}>Customer Care Helpline:</Text>
-            <Text style = {{color: '#777'}}>9483763648 | nishchalamkumar12@gmail.com</Text>
+            <Text style = {{color: '#777'}}> Helpline Contact:</Text>
+            <Text style = {{color: '#777'}}>7411232380 | drdilip.stays@gmail.com</Text>
         </View>
       </ScrollView>
     </View>

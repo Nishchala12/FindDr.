@@ -66,7 +66,8 @@ class PatientRequests extends Component {
             if(this.state.requests[reqIDs[i]].status==0)
             {
                 renderArray.push(<PatientRequestCard data = { this.state.requests[reqIDs[i]] } expanded = { this.state.expanded[reqIDs[i]] } 
-                    toggle = { this.toggle.bind(this, reqIDs[i]) } colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }/>)
+                    toggle = { this.toggle.bind(this, reqIDs[i]) } colors = { this.state.colors[reqIDs[i]] } id = { reqIDs[i] }
+                    crossAction = { this.crossAction.bind(this, reqIDs[i]) }/>)
             }
         }
         if(renderArray.length==0)
@@ -77,6 +78,17 @@ class PatientRequests extends Component {
             </View>);
         }
         return renderArray;
+    }
+
+    crossAction(id) {
+        firebase.database().ref('requests/patient/'+id).update({
+            status: -1
+        })
+        .then(()=>{
+            console.log('Success')
+            }).catch((error)=>{
+                console.log('error ' , error);
+            })
     }
     
     render()
