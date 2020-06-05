@@ -1,5 +1,5 @@
 # FindDr.
-This document along with the source code of the application is being submitted as a Proof of Concept in return for ₹15,000/- and other added incentives post the app launch.
+This document along with the source code of the application is being submitted as a Proof of Concept.
 ## Tech Stack
 - React Native
 - Firebase Authentication
@@ -207,4 +207,10 @@ This document along with the source code of the application is being submitted a
 
 ### /src/components/screens/Doctor/DocHospitalAccepted.js
 - In the above two files, nested listeners are used to map the request IDs under the `requests/hospital` with the `users/uid/hospitalrequests` node respectively for retrieval of data.
-- Requests appear in these pages if their status = 1/2/3.
+- Requests appear in these pages if their status = 1/2/3.   
+<br />
+<br />
+### Note:
+- After official handing over of the application and the code associated with it, a new firebase project needs to be created with official credentials and the project details must be replaced in the `firebase.initializeApp()` method.
+-  This document is being submitted in return for ₹15,000/- and other added incentives post the app launch.
+
