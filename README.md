@@ -12,6 +12,7 @@ This document along with the source code of the application is being submitted a
 ### App Flow
 <img src="Documentation/FindDr.png" height=1000 />
 ### Firebase Database Architecture
+
 ```
 {
   "requests" : {
@@ -120,6 +121,7 @@ This document along with the source code of the application is being submitted a
     }
   }
 }
+
 ```
 
 ## Files
@@ -127,6 +129,7 @@ This document along with the source code of the application is being submitted a
 - Initialize the app with Firebase credentials.
 - Initialize Navigate Router for enabling app navigation.  
 <br />
+
 ### /src/components/Root.js
 - File used for Navigation.
 - Uses stack, MaterialTopTab, and BottomTab Navigation.  
@@ -164,6 +167,7 @@ This document along with the source code of the application is being submitted a
 - Each request's `reqID` will be added under `users/uid/myrequests`
 - Status is set to 0.   
 <br />
+
 ### /src/components/screens/Patient/PatientProfile.js
 ### /src/components/screens/Doctor/DoctorProfile.js
 ### /src/components/screens/Hospital/HospitalProfile.js
@@ -172,6 +176,7 @@ This document along with the source code of the application is being submitted a
 - The information in these pages can be edited by pressing the 'Edit Profile' button. The updated information will be uppdated in the realtime database.
 - Profile images can be edited as well. ImagePicker and ImageResizer packages are used for this.   
 <br />
+
 ### /src/components/screens/Patient/PatientRequests.js
 ### /src/components/screens/Hospital/HospitalRequests.js
 - In the  above two files, nested listeners are used to map the request IDs under the `requests/patient` and `requests/hospital` node with the `users/uid/myrequests` node for retrieval of data.
@@ -193,6 +198,7 @@ This document along with the source code of the application is being submitted a
 - Requests appear in these pages if their status = 0.
 - If the '✓' button is pressed, the status is set to 1 (Request accepted).
 <br />
+
 ### /src/components/screens/Doctor/DocPatientAccepted.js
 - In the above two files, nested listeners are used to map the request IDs under the `requests/patient` with the `users/uid/patientrequests` node respectively for retrieval of data.
 - Requests appear in these pages if their status = 1/2/3.    
