@@ -11,6 +11,7 @@ This document along with the source code of the application is being submitted a
 ### Component Flow
 ### App Flow
 <img src="Documentation/FindDr.png" height=1000 />
+
 ### Firebase Database Architecture
 
 ```
