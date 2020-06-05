@@ -8,7 +8,6 @@ This document along with the source code of the application is being submitted a
 
 
 ## Architecture
-### Component Flow
 ### App Flow
 <img src="Documentation/FindDr.png" height=1000 />
 
