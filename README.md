@@ -1,1 +1,1 @@
-<img src="Documentation/FindDr.png" height=1000 />
+<img src="Documentation/FindDr.png" height=1000 alignSelf: 'center/>
