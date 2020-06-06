@@ -129,7 +129,7 @@
 
 ## Files
 ### Colour Scheme
-<img src="Documentation/Colours.png" height=200 />
+<img src="Documentation/Colours.png" height=400 />
 
 ### /App.js
 - Initialize the app with Firebase credentials.
