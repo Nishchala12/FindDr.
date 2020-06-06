@@ -1,5 +1,5 @@
 # FindDr.
-- The project is a Proof of Concept for the idea which collaborates/connects the Patient, Doctor and Hospital fields.
+- The project is a Proof-of-Concept for the idea which collaborates/connects the Patient, Doctor and Hospital fields.
 - This document, the aplication apk, and the source code of the application is being submitted as discussed.
 ## Tech Stack
 <img src="Documentation/ReactFirebase.png" height=200 />
