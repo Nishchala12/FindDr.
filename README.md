@@ -217,4 +217,4 @@
 
 ### Note:
 - After official handing over of the application and the code associated with it, the config needs to be changed.
-- This document is being submitted on account of ₹15,000/- and other added incentives after the delivery.
+- This document is being submitted on account of ₹20,000/- after the delivery.
