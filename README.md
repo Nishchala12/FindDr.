@@ -138,7 +138,7 @@
 
 ### /src/components/Root.js
 - File used for Navigation.
-- Uses stack, MaterialTopTab, and BottomTab Navigation.  
+- Uses Stack, MaterialTopTab, and BottomTab Navigation.  
 <br />
 
 ### /src/components/screens/Login.js
@@ -169,7 +169,7 @@
 ### /src/components/screens/Hospital/HospitalRequestForm.js
 - Used by Patient and Hospital respectively for filing requests.
 - Request information will be stored in  the realtime database under the `requests/reqID/patient` and `requests/reqID/hospital` respectively.
-- Listeners in `componentDidMount()` have been used to displayand/or store information, as well as to provide information for the 'Same as Profile' button in `PatientRequestForm`   
+- Listeners in `componentDidMount()` have been used to display and/or store information, as well as to provide information for the 'Same as Profile' button in `PatientRequestForm`   
 - Each request's `reqID` will be added under `users/uid/myrequests`
 - Status is set to 0.   
 <br />
